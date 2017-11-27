@@ -8,8 +8,10 @@ import TabBarItem from './widget/TabBarItem'
 
 import HomeScene from './scene/Home/HomeScene'
 import MineScene from './scene/Mine/MineScene'
+import ConfirmLoanScene from './scene/ConfirmLoan/ConfirmLoanScene'
 
 import WebScene from './widget/WebScene'
+
 
 const lightContentScenes = ['Home', 'Mine']
 
@@ -40,11 +42,11 @@ class RootScene extends PureComponent {
                         const currentScene = getCurrentRouteName(currentState);
                         const previousScene = getCurrentRouteName(prevState);
                         if (previousScene !== currentScene) {
-                            if (lightContentScenes.indexOf(currentScene) >= 0) {
-                                StatusBar.setBarStyle('light-content')
-                            } else {
-                                StatusBar.setBarStyle('dark-content')
-                            }
+                            // if (lightContentScenes.indexOf(currentScene) >= 0) {
+                            //     StatusBar.setBarStyle('light-content')
+                            // } else {
+                            //     StatusBar.setBarStyle('dark-content')
+                            // }
                         }
                     }
                 }
@@ -118,8 +120,8 @@ const Tab = TabNavigator(
     {
         tabBarComponent: TabBarBottom,
         tabBarPosition: 'bottom',
-        swipeEnabled: true,
-        animationEnabled: true,
+        swipeEnabled: false,
+        animationEnabled: false,
         lazy: true,
         // headerMode: 'none',
         tabBarOptions: {
@@ -135,13 +137,14 @@ const Navigator = StackNavigator(
     {
         Tab: { screen: Tab },
         Web: { screen: WebScene },
+        ConfirmLoanScene: { screen: ConfirmLoanScene}
         // GroupPurchase: { screen: GroupPurchaseScene },
     },
     {
         navigationOptions: {
             // headerStyle: { backgroundColor: color.theme }
             headerBackTitle: null,
-            headerTintColor: '#333333',
+            headerTintColor: '#fff',
             showIcon: true,
         },
     }
