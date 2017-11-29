@@ -18,4 +18,4 @@
      }
  }
 
- AppRegistry.registerComponent('Loans', () => MeiTuan);;
+ AppRegistry.registerComponent('Loans', () => Loans);;
