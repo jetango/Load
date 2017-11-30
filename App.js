@@ -17,5 +17,3 @@
          );
      }
  }
-
- AppRegistry.registerComponent('Loans', () => Loans);;
