@@ -1,154 +1,170 @@
+//import liraries
 import React, { PureComponent } from 'react'
-import { View, Text, StyleSheet, StatusBar, Image, TouchableOpacity, ScrollView, RefreshControl } from 'react-native'
+import { View, Dimensions, FlatList, Text, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native'
+import MineSceneCell from './MineSceneCell'
 
-import { Heading1, Heading2, Paragraph } from '../../widget/Text'
-import { screen, system, tool } from '../../common'
-import { color, DetailCell, NavigationItem, SpacingView } from '../../widget'
+var ScreenWidth = Dimensions.get('window').width;
+var ScreenHeight = Dimensions.get('window').height;
+
+var configs = [{
+    id: '1',
+    logoImg: '',
+    title: '借款记录',
+    content: '',
+    jumpLink: 'LoanList'
+}, {
+    id: '2',
+    logoImg: '',
+    title: '我的优惠券',
+    content: '',
+    jumpLink: 'SettingTradePwd'
+}, {
+    id: '3',
+    logoImg: '',
+    title: '帮助中心',
+    content: '',
+    jumpLink: 'MessageCenter'
+}, {
+    id: '4',
+    logoImg: '',
+    title: '完善资料',
+    content: '',
+    jumpLink: 'PhoneInputLogin-1'
+}, {
+    id: '5',
+    logoImg: '',
+    title: '我的银行卡',
+    content: '',
+    jumpLink: 'BindBankCard'
+}, {
+    id: '6',
+    logoImg: '',
+    title: '我的邀请码',
+    content: 'Adg23sssfsd',
+    jumpLink: 'PhoneInputLogin-2'
+}];
 
 class MineScene extends PureComponent {
+    // 导航栏设置
     static navigationOptions = ({ navigation }) => ({
-        headerRight: (
-            <View style={{ flexDirection: 'row' }}>
-                <NavigationItem
-                    icon={require('../../img/Mine/icon_navigationItem_set_white.png')}
-                    onPress={() => {
+        header: null // 隐藏导航栏
+    });
 
-                    }}
-                />
-                <NavigationItem
-                    icon={require('../../img/Home/icon_navigationItem_message_white.png')}
-                    onPress={() => {
-
-                    }}
-                />
-            </View>
-        ),
-        headerStyle: { backgroundColor: color.theme },
-    })
-
-    state: {
-        isRefreshing: boolean
-    }
-
-    constructor(props: Object) {
-        super(props)
-
-        this.state = {
-            isRefreshing: false
-        }
-    }
-
-    onHeaderRefresh() {
-        this.setState({ isRefreshing: true })
-
-        setTimeout(() => {
-            this.setState({ isRefreshing: false })
-        }, 2000);
-    }
-
-    renderCells() {
-        let cells = []
-        let dataList = this.getDataList()
-        for (let i = 0; i < dataList.length; i++) {
-            let sublist = dataList[i]
-            for (let j = 0; j < sublist.length; j++) {
-                let data = sublist[j]
-                let cell = <DetailCell image={data.image} title={data.title} subtitle={data.subtitle} key={data.title} />
-                cells.push(cell)
-            }
-            cells.push(<SpacingView key={i} />)
-        }
-
+    render() {
         return (
-            <View style={{ flex: 1 }}>
-                {cells}
-            </View>
-        )
-    }
-
-    renderHeader() {
-        return (
-            <View style={styles.header}>
-                <View style={styles.userContainer}>
-                    <Image style={styles.avatar} source={require('../../img/Mine/avatar.png')} />
-                    <View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Heading1 style={{ color: 'white' }}>素敌</Heading1>
-                            <Image style={{ marginLeft: 4 }} source={require('../../img/Mine/beauty_technician_v15.png')} />
-                        </View>
-                        <Paragraph style={{ color: 'white', marginTop: 4 }}>个人信息 ></Paragraph>
+            <View style={styles.container}>
+                <View style={styles.topContainer}>
+                    <View style={styles.topAccountContainer}>
+                        <Image style={styles.emptyImg} />
+                        <Text style={styles.accountPhone}>152****9457</Text>
+                        <TouchableOpacity style={styles.settingBtn}>
+                            <Image style={styles.settingImg} />
+                        </TouchableOpacity>
                     </View>
+                    <View style={styles.moneyContainer}>
+                        <Text style={styles.amountTitle}>总额度(元)</Text>
+                        <View style={styles.numContainer}>
+                            <Text style={styles.loanNumTitle}>1500</Text>
+                            <TouchableOpacity style={styles.questionBtn}>
+                                <Image style={styles.questionImg} />
+                            </TouchableOpacity>
+                        </View>
+                        <Text style={styles.amountTitle}>剩余可借：1500元</Text>
+                    </View>
+                </View>
+                <View style={styles.bottomContainer}>
+                    <FlatList 
+                        style={styles.listContainer}
+                        data={configs}
+                        keyExtractor={(item, index) => item.id}
+                    renderItem={({item}) => {return <MineSceneCell config={item} jumpNextPage={(item) => this._jump(item, this)}></MineSceneCell>}} />
                 </View>
             </View>
         )
     }
-
-    render() {
-        return (
-            <View style={{ flex: 1, backgroundColor: color.background }}>
-                <View style={{ position: 'absolute', width: screen.width, height: screen.height / 2, backgroundColor: color.theme }} />
-                <ScrollView
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.isRefreshing}
-                            onRefresh={() => this.onHeaderRefresh()}
-                            tintColor='gray'
-                        />
-                    }>
-                    {this.renderHeader()}
-                    <SpacingView />
-                    {this.renderCells()}
-                </ScrollView>
-            </View>
-        );
+    
+    // event
+    _jump(item, self) {
+        const prefix = "PhoneInputLogin-";
+        let link = item.jumpLink;
+        if (link.indexOf(prefix) == 0) {
+            var tailStr = link.substr(prefix.length, link.length - prefix.length);
+            self.props.navigation.navigate(prefix.substr(0, prefix.length - 1), {jumpStyle: tailStr})
+        } else {
+            self.props.navigation.navigate(link)
+        }
     }
-
-    getDataList() {
-        return (
-            [
-                [
-                    { title: '我的钱包', subtitle: '办信用卡', image: require('../../img/Mine/icon_mine_wallet.png') },
-                    { title: '余额', subtitle: '￥95872385', image: require('../../img/Mine/icon_mine_balance.png') },
-                    { title: '抵用券', subtitle: '63', image: require('../../img/Mine/icon_mine_voucher.png') },
-                    { title: '会员卡', subtitle: '2', image: require('../../img/Mine/icon_mine_membercard.png') }
-                ],
-                [
-                    { title: '好友去哪', image: require('../../img/Mine/icon_mine_friends.png') },
-                    { title: '我的评价', image: require('../../img/Mine/icon_mine_comment.png') },
-                    { title: '我的收藏', image: require('../../img/Mine/icon_mine_collection.png') },
-                    { title: '会员中心', subtitle: 'v15', image: require('../../img/Mine/icon_mine_membercenter.png') },
-                    { title: '积分商城', subtitle: '好礼已上线', image: require('../../img/Mine/icon_mine_member.png') }
-                ],
-                [
-                    { title: '客服中心', image: require('../../img/Mine/icon_mine_customerService.png') },
-                    { title: '关于美团', subtitle: '我要合作', image: require('../../img/Mine/icon_mine_aboutmeituan.png') }
-                ]
-            ]
-        )
-    }
-}
+};
 
 const styles = StyleSheet.create({
-    header: {
-        backgroundColor: color.theme,
-        paddingBottom: 20
+    container: {
+        backgroundColor: '#eff3f6',
+        flexDirection: 'column',
     },
-    icon: {
-        width: 27,
-        height: 27,
+    topContainer: {
+        width: ScreenWidth,
+        height: 310,
+        backgroundColor: '#5b6dff',
+        flexDirection: 'column',
+        paddingLeft: 15,
+        paddingRight: 15
     },
-    userContainer: {
+    topAccountContainer: {
         flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        margin: 10,
+        marginTop: 40
     },
-    avatar: {
-        width: 50,
-        height: 50,
-        marginRight: 10,
-        borderRadius: 25,
-        borderWidth: 2,
-        borderColor: '#51D3C6'
+    emptyImg: {
+        width: 30,
+        height: 30 // 和右侧图片大小一致，保证中间的手机号居中
+    },
+    accountPhone: {
+        fontSize: 16,
+        color: 'white',
+        fontWeight: '500'
+    },
+    settingImg: {
+        backgroundColor: 'red',
+        width: 30,
+        height: 30
+    },
+    // 额度
+    moneyContainer: {
+        flexDirection: 'column',
+        width: ScreenWidth,
+        height: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 40
+    },
+    amountTitle: {
+        color: 'white',
+        fontSize: 14,
+        fontWeight: '400',
+        marginTop: 10
+    },
+    numContainer: {
+        flexDirection: 'row',
+        marginTop: 10
+    },
+    loanNumTitle: {
+        fontSize: 40,
+        color: 'white',
+        fontWeight: '600'
+    },
+    questionImg: {
+        width: 15,
+        height: 15,
+        backgroundColor: 'red'
+    },
+    bottomContainer: {
+        marginTop: -60,
+        width: ScreenWidth - 30,
+        marginLeft: 15,
+        paddingLeft: 15,
+        paddingRight: 15,
+        backgroundColor: 'white'
     }
 });
 

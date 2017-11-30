@@ -9,6 +9,13 @@ import TabBarItem from './widget/TabBarItem'
 import HomeScene from './scene/Home/HomeScene'
 import MineScene from './scene/Mine/MineScene'
 import ConfirmLoanScene from './scene/ConfirmLoan/ConfirmLoanScene'
+import PhoneInputLogin from './scene/Login/PhoneInputLogin'
+import PasswordLogin from './scene/Login/PasswordLogin'
+import MessagePwdRegister from './scene/Login/MessagePwdRegister'
+import MessageCenter from './scene/Message/MessageCenter'
+import LoanList from './scene/Loan/LoanList'
+import BindBankCard from './scene/BindBankCard/BindBankCard'
+import SettingTradePwd from './scene/ConfirmLoan/SettingTradePwd'
 
 import WebScene from './widget/WebScene'
 
@@ -137,8 +144,14 @@ const Navigator = StackNavigator(
     {
         Tab: { screen: Tab },
         Web: { screen: WebScene },
-        ConfirmLoanScene: { screen: ConfirmLoanScene}
-        // GroupPurchase: { screen: GroupPurchaseScene },
+        ConfirmLoanScene: { screen: ConfirmLoanScene},
+        PhoneInputLogin: {screen: PhoneInputLogin},
+        PasswordLogin: {screen: PasswordLogin},
+        MessagePwdRegister: {screen: MessagePwdRegister},
+        MessageCenter: {screen: MessageCenter},
+        LoanList: {screen: LoanList},
+        BindBankCard: {screen: BindBankCard},
+        SettingTradePwd: {screen: SettingTradePwd}
     },
     {
         navigationOptions: {
