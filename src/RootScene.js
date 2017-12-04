@@ -16,6 +16,7 @@ import MessageCenter from './scene/Message/MessageCenter'
 import LoanList from './scene/Loan/LoanList'
 import BindBankCard from './scene/BindBankCard/BindBankCard'
 import SettingTradePwd from './scene/ConfirmLoan/SettingTradePwd'
+import Center from './scene/Auth/Center'
 
 import WebScene from './widget/WebScene'
 
@@ -65,8 +66,22 @@ class RootScene extends PureComponent {
 
 const Tab = TabNavigator(
     {
+        // Home: {
+        //     screen: HomeScene,
+        //     navigationOptions: ({ navigation }) => ({
+        //         tabBarLabel: '我的',
+        //         tabBarIcon: ({ focused, tintColor }) => (
+        //             <TabBarItem
+        //                 tintColor={tintColor}
+        //                 focused={focused}
+        //                 normalImage={require('./img/tabbar/pfb_tabbar_homepage.png')}
+        //                 selectedImage={require('./img/tabbar/pfb_tabbar_homepage_selected.png')}
+        //             />
+        //         )
+        //     }),
+        // },
         Home: {
-            screen: HomeScene,
+            screen: Center,
             navigationOptions: ({ navigation }) => ({
                 tabBarLabel: '我的',
                 tabBarIcon: ({ focused, tintColor }) => (
@@ -151,7 +166,8 @@ const Navigator = StackNavigator(
         MessageCenter: {screen: MessageCenter},
         LoanList: {screen: LoanList},
         BindBankCard: {screen: BindBankCard},
-        SettingTradePwd: {screen: SettingTradePwd}
+        SettingTradePwd: {screen: SettingTradePwd},
+        Center: {screen: Center}
     },
     {
         navigationOptions: {

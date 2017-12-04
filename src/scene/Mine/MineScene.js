@@ -29,7 +29,8 @@ var configs = [{
     logoImg: '',
     title: '完善资料',
     content: '',
-    jumpLink: 'PhoneInputLogin-1'
+    // jumpLink: 'PhoneInputLogin-1'
+    jumpLink: 'Center'
 }, {
     id: '5',
     logoImg: '',
@@ -73,7 +74,7 @@ class MineScene extends PureComponent {
                     </View>
                 </View>
                 <View style={styles.bottomContainer}>
-                    <FlatList 
+                    <FlatList
                         style={styles.listContainer}
                         data={configs}
                         keyExtractor={(item, index) => item.id}
@@ -82,7 +83,7 @@ class MineScene extends PureComponent {
             </View>
         )
     }
-    
+
     // event
     _jump(item, self) {
         const prefix = "PhoneInputLogin-";

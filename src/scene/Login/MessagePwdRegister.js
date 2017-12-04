@@ -35,7 +35,7 @@ class MessagePwdRegister extends PureComponent {
                         maxLength={6}
                         placeholder="请输入验证码"
                         onChangeText={(text) => {this.numChange(text, this)}}/>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         style={styles.messageNumBtn}
                         onPress={() => this.getMessageNum(this)}>
                         <Text style={styles.messageNumTitle}>获取验证码</Text>
@@ -51,30 +51,30 @@ class MessagePwdRegister extends PureComponent {
                         onChangeText={(text) => {this.numChange(text, this)}}/>
                 </View>
                 <View style={styles.invitationContainer}>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         style={styles.invitationButton}
                         onPress={this.invitationBtnDidClicked}>
                         <Text style={styles.invitationCode}>我有邀请码>></Text>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={styles.registerButton}
                     onPress={this.registerBtnDidClicked}>
                     <Text style={styles.registerButtonTitle}>注册</Text>
                 </TouchableOpacity>
                 <View style={styles.protocolContainer}>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         style={styles.checkProtocoBtn}
                         onPress={this.checkBtnDidClicked}>
                         <Image style={styles.checkProtocoImg} />
                     </TouchableOpacity>
                     <Text style={styles.pureProtocol}>注册即同意</Text>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         style={styles.registerProtocolBtn}
                         onPress={this.registerProtocolBtnDidClicked}>
                         <Text style={styles.registerProtocolTitle}>《注册协议》</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         style={styles.authProtocolBtn}
                         onPress={this.authProtocolBtnDidClicked}>
                         <Text style={styles.authProtocolTitle}>《使用授权协议》</Text>
@@ -93,7 +93,7 @@ class MessagePwdRegister extends PureComponent {
         } else {
             self.setState({isCloseHidden: true});
         }
-        
+
         // 注册页面，设置的密码位数是6-16位
         if (text.length >= 6) {
             self.setState({isBtnEnabled: true});
@@ -110,11 +110,18 @@ class MessagePwdRegister extends PureComponent {
         if (this.state.isBtnEnabled) {
             // 进入下一个页面 TO_DO
             // this.props.navigation.navigate('GroupPurchase', { info: info })
+            this.props.navigation.dispatch(
+                NavigationActions.reset({
+                    index: 0,
+                    key: null,
+                    actions: [NavigationActions.navigate({ routeName: 'Tab' })]
+                })
+            )
         }
     }
 
     invitationBtnDidClicked(self) {
-        // 邀请码 
+        // 邀请码
         console.log('invitationBtnDidClicked');
     }
 
@@ -131,7 +138,7 @@ const styles = StyleSheet.create({
     },
     container: {
         backgroundColor: 'white',
-        flex: 1, 
+        flex: 1,
         flexDirection: 'column',
         alignItems: 'center'
     },
@@ -202,7 +209,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600'
     },
-    // 
+    //
     registerButton: {
         width: 300,
         height: 40,

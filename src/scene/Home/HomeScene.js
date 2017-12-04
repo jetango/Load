@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { View, Text, StyleSheet, StatusBar, Image, TouchableOpacity, ScrollView, RefreshControl, Dimensions, Slider} from 'react-native'
+import { View, Text, StyleSheet, StatusBar, Image, TouchableOpacity, ScrollView, RefreshControl, Dimensions, Slider, AsyncStorage} from 'react-native'
 
 import { Heading1, Heading2, Paragraph, HeadingBig } from '../../widget/Text'
 import { screen, system, tool , px2dp} from '../../common'
@@ -10,6 +10,8 @@ const bannerImages = [
     require('../../img/banner1.jpg'),
     require('../../img/banner2.png')
 ];
+
+const STORAGE_USER = '@AsyncStorage:user_info'
 
 class MineScene extends PureComponent {
     static navigationOptions = ({ navigation }) => ({
@@ -22,9 +24,22 @@ class MineScene extends PureComponent {
         { (this: any).immediatelyApply = this.immediatelyApply.bind(this) }
     }
 
-    immediatelyApply() {
+    async immediatelyApply() {
         // this.props.navigation.navigate('ConfirmLoanScene', { info: info })
-        this.props.navigation.navigate('ConfirmLoanScene', {title: '借款'})
+        let userInfo = await this._getUserInfo()
+        if (userInfo) {
+            this.props.navigation.navigate('ConfirmLoanScene', {title: '借款'})
+        } else {
+            this.props.navigation.navigate('PhoneInputLogin', {title: '登陆', jumpStyle: 1})
+        }
+    }
+
+    async _getUserInfo() {
+        try {
+            return await AsyncStorage.getItem(STORAGE_USER)
+        } catch(error) {
+
+        }
     }
 
     render() {

@@ -42,13 +42,13 @@ class PhoneInputLogin extends PureComponent {
                         maxLength={11}
                         placeholder="请输入注册/登录手机号"
                         onChangeText={(text) => {this.phoneNumChange(text, this)}}/>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         style={[styles.closeImg, this.state.isCloseHidden ? styles.closeImgHidden : styles.closeImgShow]}
                         onPress={() => this.deletePhoneNum(this)}>
                         <Image  style={{width: 20, height: 20}}/>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={[styles.nextButton, this.state.isBtnEnabled ? styles.nextBtnEnable : styles.nextBtnDisenable]}
                     onPress={this.nextBtnDidClicked}>
                     <Text style={styles.nextButtonTitle}>下一步</Text>
@@ -66,7 +66,7 @@ class PhoneInputLogin extends PureComponent {
         } else {
             self.setState({isCloseHidden: true});
         }
-        
+
         if (text.length == 11) {
             self.setState({isBtnEnabled: true});
         } else {
@@ -77,17 +77,24 @@ class PhoneInputLogin extends PureComponent {
     nextBtnDidClicked() {
         if (this.state.isBtnEnabled) {
             // 进入下一个页面 TO_DO
-            if (this.props.navigation.state.params.jumpStyle == "1") { // 登录
-                this.props.navigation.navigate('PasswordLogin');
-            } else if (this.props.navigation.state.params.jumpStyle == "2") { // 注册
-                this.props.navigation.navigate('MessagePwdRegister');
+            // 请求API，获取数据，判断是否已经注册过，注册就跳转到登陆，否则注册页面
+            let test = Math.round(Math.random() * 10) % 2
+            if (test == 0) {
+                this.props.navigation.navigate('PasswordLogin')
+            } else {
+                this.props.navigation.navigate('MessagePwdRegister')
             }
+            // if (this.props.navigation.state.params.jumpStyle == "1") { // 登录
+            //     this.props.navigation.navigate('PasswordLogin');
+            // } else if (this.props.navigation.state.params.jumpStyle == "2") { // 注册
+            //     this.props.navigation.navigate('MessagePwdRegister');
+            // }
             // this.props.navigation.navigate('GroupPurchase', { info: info })
         }
     }
 
     deletePhoneNum(self) {
-        // 删除输入的手机号 TO_DO 
+        // 删除输入的手机号 TO_DO
     }
 };
 
@@ -98,7 +105,7 @@ const styles = StyleSheet.create({
     },
     container: {
         backgroundColor: 'white',
-        flex: 1, 
+        flex: 1,
         flexDirection: 'column',
         alignItems: 'center'
     },
@@ -141,7 +148,7 @@ const styles = StyleSheet.create({
         paddingLeft: 30,
         marginTop: 50,
     },
-    // 
+    //
     nextButton: {
         width: 300,
         height: 40,

@@ -1,8 +1,9 @@
 //import liraries
 import React, { PureComponent } from 'react'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, AsyncStorage} from 'react-native'
 import { color, DetailCell, NavigationItem, SpacingView, Button, Separator } from '../../widget'
-
+import { NavigationActions } from 'react-navigation'
+const STORAGE_USER = '@AsyncStorage:user_info'
 
 class PasswordLogin extends PureComponent {
     // 导航栏设置
@@ -20,6 +21,7 @@ class PasswordLogin extends PureComponent {
         this.state = {
             isBtnEnabled: false,
         };
+        { (this: any).nextBtnDidClicked = this.nextBtnDidClicked.bind(this) }
     }
 
     render() {
@@ -37,17 +39,17 @@ class PasswordLogin extends PureComponent {
                         secureTextEntry={true}
                         onChangeText={(text) => {this.phoneNumChange(text, this)}}/>
                 </View>
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={[styles.nextButton, this.state.isBtnEnabled ? styles.nextBtnEnable : styles.nextBtnDisenable]}
                     onPress={this.nextBtnDidClicked}>
                     <Text style={styles.nextButtonTitle}>登录</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={styles.messageButton}
                     onPress={this.messageLoginBtnDidClicked}>
                     <Text style={styles.messageButtonTitle}>使用短信验证码登录</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={styles.moreButton}
                     onPress={this.moreBtnDidClicked}>
                     <Text style={styles.moreButtonTitle}>更多</Text>
@@ -66,7 +68,7 @@ class PasswordLogin extends PureComponent {
         } else {
             self.setState({isCloseHidden: true});
         }
-        
+
         // 注册页面，设置的密码位数是6-16位
         if (text.length >= 6) {
             self.setState({isBtnEnabled: true});
@@ -75,15 +77,34 @@ class PasswordLogin extends PureComponent {
         }
     }
 
-    nextBtnDidClicked() {
+    async nextBtnDidClicked() {
         if (this.state.isBtnEnabled) {
+            // TODO login API
+            await this._setUserInfo(JSON.stringify({phone: 123123123}))
+
+            this.props.navigation.dispatch(
+                NavigationActions.reset({
+                    index: 0,
+                    key: null,
+                    actions: [NavigationActions.navigate({ routeName: 'Tab' })]
+                })
+            )
             // 进入下一个页面 TO_DO
             // this.props.navigation.navigate('GroupPurchase', { info: info })
         }
     }
 
+    async _setUserInfo(info) {
+        try {
+            await AsyncStorage.removeItem(STORAGE_USER)
+            return await AsyncStorage.setItem(STORAGE_USER, info)
+        } catch(error) {
+
+        }
+    }
+
     messageLoginBtnDidClicked(self) {
-        // 跳转短信验证码登录 
+        // 跳转短信验证码登录
     }
 
     moreBtnDidClicked() {
@@ -98,7 +119,7 @@ const styles = StyleSheet.create({
     },
     container: {
         backgroundColor: 'white',
-        flex: 1, 
+        flex: 1,
         flexDirection: 'column',
         alignItems: 'center'
     },
@@ -132,7 +153,7 @@ const styles = StyleSheet.create({
         paddingLeft: 30,
         marginTop: 30,
     },
-    // 
+    //
     nextButton: {
         width: 300,
         height: 40,
