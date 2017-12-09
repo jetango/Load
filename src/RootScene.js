@@ -16,7 +16,13 @@ import MessageCenter from './scene/Message/MessageCenter'
 import LoanList from './scene/Loan/LoanList'
 import BindBankCard from './scene/BindBankCard/BindBankCard'
 import SettingTradePwd from './scene/ConfirmLoan/SettingTradePwd'
+
 import Center from './scene/Auth/Center'
+import Personal from './scene/Auth/Personal'
+import Contact from './scene/Auth/Contact'
+import Operator from './scene/Auth/Operator'
+import Zhima from './scene/Auth/Zhima'
+import CompletedOperator from './scene/Auth/CompletedOperator'
 
 import WebScene from './widget/WebScene'
 
@@ -167,7 +173,12 @@ const Navigator = StackNavigator(
         LoanList: {screen: LoanList},
         BindBankCard: {screen: BindBankCard},
         SettingTradePwd: {screen: SettingTradePwd},
-        Center: {screen: Center}
+        Center: {screen: Center},
+        Personal: {screen: Personal},
+        Contact: {screen: Contact},
+        Operator: {screen: Operator},
+        Zhima: {screen: Zhima},
+        CompletedOperator: {screen: CompletedOperator}
     },
     {
         navigationOptions: {

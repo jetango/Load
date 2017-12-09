@@ -15,7 +15,7 @@ class Center extends PureComponent {
     }
 
     completeInfo(type) {
-        
+        this.props.navigation.navigate(type);
     }
 
     render() {
@@ -25,13 +25,13 @@ class Center extends PureComponent {
                 <View style={styles.subContainerBox}>
                     <View style={[styles.subContainer, styles.borderBottom]}>
                         <TouchableOpacity style={[styles.flex, styles.alignItems, styles.justifyContent, styles.item]}
-                            onPress={this.completeInfo('Personal')}
+                            onPress={() => this.completeInfo('Personal')}
                         >
                             <Heading1 style={styles.heading}>个人信息</Heading1>
                             <Heading2 style={styles.heading2}>未完善</Heading2>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.flex, styles.alignItems, styles.justifyContent, styles.item, styles.borderLeft]}
-                            onPress={this.completeInfo('Contact')}
+                            onPress={() => this.completeInfo('Contact')}
                         >
                             <Heading1 style={styles.heading}>紧急联系人</Heading1>
                             <Heading2 style={styles.heading2}>未完善</Heading2>
@@ -39,13 +39,13 @@ class Center extends PureComponent {
                     </View>
                     <View style={styles.subContainer}>
                         <TouchableOpacity style={[styles.flex, styles.alignItems, styles.justifyContent, styles.item]}
-                            onPress={this.completeInfo('Operator')}
+                            onPress={() => this.completeInfo('Operator')}
                         >
                             <Heading1 style={styles.heading}>手机运营商</Heading1>
                             <Heading2 style={styles.heading2}>未完善</Heading2>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.flex, styles.alignItems, styles.justifyContent, styles.item, styles.borderLeft]}
-                            onPress={this.completeInfo('Zhima')}
+                            onPress={() => this.completeInfo('Zhima')}
                         >
                             <Heading1 style={styles.heading}>芝麻授信</Heading1>
                             <Heading2 style={styles.heading2}>未完善</Heading2>

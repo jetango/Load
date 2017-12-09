@@ -6,7 +6,7 @@ import { Heading1, Heading2, Paragraph, HeadingBig } from '../../widget/Text'
 var ScreenWidth = Dimensions.get('window').width;
 var ScreenHeight = Dimensions.get('window').height;
 
-class Operator extends PureComponent {
+class CompletedOperator extends PureComponent {
     static navigationOptions = ({ navigation }) => ({
         headerStyle: { backgroundColor: color.theme},
         title: "手机运营商认证",
@@ -14,36 +14,18 @@ class Operator extends PureComponent {
 
     constructor(props: Object) {
         super(props);
-        { (this: any).completeAuth = this.completeAuth.bind(this) }
-    }
-
-    completeAuth() {
-        this.props.navigation.navigate('CompletedOperator');
+        
     }
 
     render() {
         return (
             <ScrollView  style={styles.container}>
-                <View style={styles.inputContainer}>
-                    <Separator />
-                    <TextInput 
-                        style={[styles.phoneInput, styles.commonInput]}
-                        placeholder="请输入手机号" />
-                    <Separator />
-                    <TextInput 
-                        style={[styles.pwdInput, styles.commonInput]}
-                        placeholder="请输入服务密码" />
-                    <Separator />
+                <View style={styles.tipContainer}>
+                    <Image style={styles.completedImg} />
+                    <Text style={styles.completedTip}>恭喜您，运营商已完成认证</Text>
                 </View>
-                <View style={styles.promptContainer}>
-                    <Paragraph style={[styles.tipTitle]}>温馨提示</Paragraph>
-                    <Paragraph style={[styles.tipTitle]}>1、请输入正确的运营商（移动、联通、电信）服务密码，如若忘记可通过拨打运营商服务电话或者登录网上营业厅找回密码；</Paragraph>
-                    <Paragraph style={[styles.tipTitle]}>2、运营商认证需要2～3分钟，请耐心等待；</Paragraph>
-                </View>
-                <TouchableOpacity 
-                    style={styles.authenticationBtn} 
-                    onPress={() => this.completeAuth()}>
-                    <Text style={styles.authenticationTitle}>认证中</Text>
+                <TouchableOpacity style={styles.authenticationBtn} >
+                    <Text style={styles.authenticationTitle}>已认证</Text>
                 </TouchableOpacity>
                 <View style={styles.encryptContainer}>
                     <Image style={styles.encryptImg} />
@@ -56,31 +38,23 @@ class Operator extends PureComponent {
 
 const styles = StyleSheet.create({
     container: {
-        // flex: 1,
         backgroundColor: color.background,
     },
-    inputContainer: {
-        marginTop: 10,
+    tipContainer: {
         flexDirection: 'column',
-        backgroundColor: '#fff'
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 80
     },
-    commonInput: {
-        height: 50,
-        marginLeft: 15,
-        marginRight: 15,
-        fontSize: 16
+    completedImg: {
+        width: 120,
+        height: 100,
+        backgroundColor: 'red'
     },
-    promptContainer: {
-        flexDirection: 'column',
-        width: ScreenWidth - 30,
-        height: 80,
-        marginLeft: 15,
-        marginRight: 15,
-        marginTop: 20
-    },
-    tipTitle: {
-        fontSize: 14,
-        color: '#a9a9a9'
+    completedTip: {
+        fontSize: 20,
+        fontWeight: '700',
+        marginTop: 30
     },
     authenticationBtn: {
         backgroundColor: '#5a6dff',
@@ -91,7 +65,7 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginRight: 15,
         borderRadius: 30,
-        marginTop: 50,
+        marginTop: 100,
         marginBottom: 50
     },
     authenticationTitle: {
@@ -118,4 +92,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Operator;
+export default CompletedOperator;
