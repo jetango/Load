@@ -7,16 +7,16 @@ var {width, height} = Dimensions.get('window');
 class LoanListCell extends PureComponent {
 
     render() {
-        let {info} = this.props;
+        let {info, ...prop} = this.props;
         return (
-            <View style={styles.container}>
+            <TouchableOpacity style={styles.container} {...prop}>
                 <View style={styles.headlineContainer}>
                     <Text style={styles.headlineText}>{info.loanAmount}</Text>
                     <Text style={styles.timeText}>{info.time}</Text>
                 </View>
                 <Text style={styles.detailText} numberOfLines={1}>{info.loanStatus}</Text>
-                <Image style={styles.arrowRight} />
-            </View>
+                <Image style={[styles.arrowRight]} source={require('../../img/Public/cell_arrow.png')}/>
+            </TouchableOpacity>
         )
     }
 };
@@ -56,9 +56,8 @@ const styles = StyleSheet.create({
         marginRight: 5
     },
     arrowRight: {
-        width: 15,
-        height: 20,
-        backgroundColor: 'red'
+        width: 16,
+        height: 16
     }
 });
 

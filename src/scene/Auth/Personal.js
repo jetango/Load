@@ -2,9 +2,13 @@ import React, { PureComponent } from 'react'
 import { View, TextInput, Text, StyleSheet, StatusBar, Image, TouchableOpacity, ScrollView, RefreshControl, Dimensions, Slider, AsyncStorage, PixelRatio} from 'react-native'
 import { color, DetailCell, NavigationItem, SpacingView, Button, Separator } from '../../widget'
 import { Heading1, Heading2, Paragraph, HeadingBig } from '../../widget/Text'
+import Picker from 'react-native-picker'
+import area from './area.json';
 
 var ScreenWidth = Dimensions.get('window').width;
 var ScreenHeight = Dimensions.get('window').height;
+
+let educational = ['本科以上', '本科', '高中', '初中', '初中以下']
 
 class Personal extends PureComponent {
     static navigationOptions = ({ navigation }) => ({
@@ -15,13 +19,89 @@ class Personal extends PureComponent {
         ),
         headerStyle: { backgroundColor: color.theme},
         title: "个人信息",
-    });
+    })
 
     constructor(props: Object) {
-        super(props);
+        super(props)
+
+        this.state = {
+            submitData: {
+                educationalVal: '',
+                area: ''
+            }
+        }
+    }
+
+    componentDidMount() {
+        // this._initEducationalPicker()
+    }
+
+    _createAreaData() {
+        let data = [];
+        let len = area.length;
+        for(let i=0;i<len;i++){
+            let city = [];
+            for(let j=0,cityLen=area[i]['city'].length;j<cityLen;j++){
+                let _city = {};
+                _city[area[i]['city'][j]['name']] = area[i]['city'][j]['area'];
+                city.push(_city);
+            }
+
+            let _data = {};
+            _data[area[i]['name']] = city;
+            data.push(_data);
+        }
+        return data;
+    }
+
+    _showAreaPicker() {
+        let self = this
+        Picker.init({
+            pickerData: this._createAreaData(),
+            pickerConfirmBtnText: '确定',
+            pickerCancelBtnText: '取消',
+            pickerTitleText: '',
+            pickerConfirmBtnColor: [0, 0, 0, 1],
+            pickerCancelBtnColor: [0, 0, 0, 1],
+            pickerToolBarBg: [255, 255, 255, 1],
+            pickerBg: [255, 255, 255, 1],
+            selectedValue: ['上海', '上海', '浦东新区'],
+            onPickerConfirm: pickedValue => {
+                self.setState({
+                    submitData: {
+                        area: pickedValue.join(' ')
+                    }
+                });
+            }
+        });
+        Picker.show();
+    }
+
+    _initEducationalPicker() {
+        var self = this
+        Picker.init({
+            pickerData: educational,
+            pickerConfirmBtnText: '确定',
+            pickerCancelBtnText: '取消',
+            pickerTitleText: '',
+            pickerConfirmBtnColor: [0, 0, 0, 1],
+            pickerCancelBtnColor: [0, 0, 0, 1],
+            pickerToolBarBg: [255, 255, 255, 1],
+            pickerBg: [255, 255, 255, 1],
+            selectedValue: [educational[0]],
+            onPickerConfirm: data => {
+                self.setState({
+                    submitData: {
+                        educationalVal: data[0]
+                    }
+                });
+            }
+        });
+        Picker.show()
     }
 
     render() {
+        let {educationalVal, area} = this.state.submitData
         return (
             <ScrollView  style={styles.container}>
                 <View style={styles.emptySeparator}></View>
@@ -29,44 +109,53 @@ class Personal extends PureComponent {
                 <TouchableOpacity>
                     <View style={styles.commonCellStyle}>
                         <Heading1 style={[styles.leftPosition, styles.heading]}>真实姓名</Heading1>
-                        <Heading1 style={[styles.rightPosition, styles.heading]}>事XX名</Heading1>
+                        {/* <Heading1 style={[styles.rightPosition, styles.heading]}>事XX名</Heading1> */}
+                        <TextInput
+                            style={{height: 40, borderWidth: 0, paddingRight: 15, paddingLeft: 15}}
+                            placeholder="请填写真是姓名，保存后无法修改"
+                        />
                     </View>
                     <Separator />
                 </TouchableOpacity>
                 <TouchableOpacity>
                     <View style={styles.commonCellStyle}>
                         <Heading1 style={[styles.leftPosition, styles.heading]}>身份证号</Heading1>
-                        <Heading1 style={[styles.rightPosition, styles.heading]}>41204533***********42434</Heading1>
+                        <TextInput
+                            style={{height: 40, borderWidth: 0, paddingRight: 15, paddingLeft: 15}}
+                            placeholder="请填写身份证号，保存后无法修改"
+                        />
                     </View>
                     <Separator />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={this._initEducationalPicker.bind(this)}>
                     <View style={styles.commonCellStyle}>
                         <Heading1 style={[styles.leftPosition, styles.heading]}>教育程度</Heading1>
                         <View style={[styles.rightPosition, styles.secondCommonStyle]}>
-                            <Heading1 style={[styles.secondLeftPosition, styles.heading]}>本科</Heading1>
-                            <Image style={[styles.rightArrow]} />
+                            <Heading1 style={[styles.secondLeftPosition, styles.heading]}>
+                                {educationalVal ? educationalVal : '请选择'}
+                            </Heading1>
+                            <Image style={[styles.rightArrow]} source={require('../../img/Public/cell_arrow.png')}/>
                         </View>
                     </View>
                     <Separator />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={this._showAreaPicker.bind(this)}>
                     <View style={styles.commonCellStyle}>
                         <Heading1 style={[styles.leftPosition, styles.heading]}>现居地址</Heading1>
                         <View style={[styles.rightPosition, styles.secondCommonStyle]}>
-                            <Heading1 style={[styles.secondLeftPosition, styles.heading]}>上海市</Heading1>
-                            <Heading1 style={[styles.secondLeftPosition, styles.heading]}>上海市</Heading1>
-                            <Heading1 style={[styles.secondLeftPosition, styles.heading]}>浦东区</Heading1>
-                            <Image style={[styles.rightArrow]} />
+                            <Heading1 style={[styles.secondLeftPosition, styles.heading]}>
+                                {area ? area : '请选择'}
+                            </Heading1>
+                            <Image style={[styles.rightArrow]} source={require('../../img/Public/cell_arrow.png')}/>
                         </View>
                     </View>
                     <Separator />
                 </TouchableOpacity>
                 <View style={styles.addressContainer}>
-                    <TextInput 
+                    <TextInput
                         style={[styles.addressInput, styles.leftPosition]}
-                        placeholder="详细地址" />
-                    <Image style={[styles.closeImg, styles.rightPosition]} />
+                        placeholder="请填写详细地址" />
+                    {/* <Image style={[styles.closeImg, styles.rightPosition]} /> */}
                     {/* <Separator /> */}
                 </View>
                 <Separator />
@@ -117,9 +206,8 @@ const styles = StyleSheet.create({
         marginRight: 5,
     },
     rightArrow: {
-        width: 20,
-        height: 20,
-        backgroundColor: 'red'
+        width: 16,
+        height: 16
     },
     // address container
     addressContainer: {
@@ -140,7 +228,7 @@ const styles = StyleSheet.create({
         height: 25,
         backgroundColor: 'red'
     },
-    // bottom 
+    // bottom
     bottomContainer: {
         marginTop: 30,
         marginBottom: 30,

@@ -14,6 +14,7 @@ import PasswordLogin from './scene/Login/PasswordLogin'
 import MessagePwdRegister from './scene/Login/MessagePwdRegister'
 import MessageCenter from './scene/Message/MessageCenter'
 import LoanList from './scene/Loan/LoanList'
+import LoanDetail from './scene/Loan/LoanDetail'
 import BindBankCard from './scene/BindBankCard/BindBankCard'
 import SettingTradePwd from './scene/ConfirmLoan/SettingTradePwd'
 
@@ -72,22 +73,8 @@ class RootScene extends PureComponent {
 
 const Tab = TabNavigator(
     {
-        // Home: {
-        //     screen: HomeScene,
-        //     navigationOptions: ({ navigation }) => ({
-        //         tabBarLabel: '我的',
-        //         tabBarIcon: ({ focused, tintColor }) => (
-        //             <TabBarItem
-        //                 tintColor={tintColor}
-        //                 focused={focused}
-        //                 normalImage={require('./img/tabbar/pfb_tabbar_homepage.png')}
-        //                 selectedImage={require('./img/tabbar/pfb_tabbar_homepage_selected.png')}
-        //             />
-        //         )
-        //     }),
-        // },
         Home: {
-            screen: Center,
+            screen: HomeScene,
             navigationOptions: ({ navigation }) => ({
                 tabBarLabel: '我的',
                 tabBarIcon: ({ focused, tintColor }) => (
@@ -100,6 +87,20 @@ const Tab = TabNavigator(
                 )
             }),
         },
+        // Home: {
+        //     screen: Center,
+        //     navigationOptions: ({ navigation }) => ({
+        //         tabBarLabel: '我的',
+        //         tabBarIcon: ({ focused, tintColor }) => (
+        //             <TabBarItem
+        //                 tintColor={tintColor}
+        //                 focused={focused}
+        //                 normalImage={require('./img/tabbar/pfb_tabbar_homepage.png')}
+        //                 selectedImage={require('./img/tabbar/pfb_tabbar_homepage_selected.png')}
+        //             />
+        //         )
+        //     }),
+        // },
         Nearby: {
             screen: MineScene,
             navigationOptions: ({ navigation }) => ({
@@ -178,7 +179,8 @@ const Navigator = StackNavigator(
         Contact: {screen: Contact},
         Operator: {screen: Operator},
         Zhima: {screen: Zhima},
-        CompletedOperator: {screen: CompletedOperator}
+        CompletedOperator: {screen: CompletedOperator},
+        LoanDetail: {screen: LoanDetail}
     },
     {
         navigationOptions: {

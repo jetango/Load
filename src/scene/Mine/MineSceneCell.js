@@ -20,7 +20,7 @@ class MineSceneCell extends PureComponent {
                 </View>
                 <View style={styles.rightContainer}>
                     <Text style={styles.rightContent}>{config.content}</Text>
-                    <Image style={styles.arrowImg} />
+                    <Image style={[styles.rightArrow]} source={require('../../img/Public/cell_arrow.png')}/>
                 </View>
             </TouchableOpacity>
         )
@@ -67,10 +67,9 @@ const styles = StyleSheet.create({
         fontSize: 14,
         marginRight: 8
     },
-    arrowImg: {
-        width: 20,
-        height: 20,
-        backgroundColor: 'blue'
+    rightArrow: {
+        width: 16,
+        height: 16
     }
 });
 

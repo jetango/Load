@@ -2,6 +2,9 @@ import React, { PureComponent } from 'react'
 import { View, TextInput, Text, StyleSheet, StatusBar, Image, TouchableOpacity, ScrollView, RefreshControl, Dimensions, Slider, AsyncStorage, PixelRatio} from 'react-native'
 import { color, DetailCell, NavigationItem, SpacingView, Button, Separator } from '../../widget'
 import { Heading1, Heading2, Paragraph, HeadingBig } from '../../widget/Text'
+import Picker from 'react-native-picker'
+
+let contactList = ['父母', '兄弟', '姐妹', '配偶']
 
 var ScreenWidth = Dimensions.get('window').width;
 var ScreenHeight = Dimensions.get('window').height;
@@ -13,10 +16,42 @@ class Contact extends PureComponent {
     });
 
     constructor(props: Object) {
-        super(props);
+        super(props)
+        this.state = {
+            dictPeople: '',
+            otherPeople: ''
+        }
+    }
+
+    _initContactPicker(type) {
+        var self = this
+        Picker.init({
+            pickerData: contactList,
+            pickerConfirmBtnText: '确定',
+            pickerCancelBtnText: '取消',
+            pickerTitleText: '',
+            pickerConfirmBtnColor: [0, 0, 0, 1],
+            pickerCancelBtnColor: [0, 0, 0, 1],
+            pickerToolBarBg: [255, 255, 255, 1],
+            pickerBg: [255, 255, 255, 1],
+            selectedValue: [contactList[0]],
+            onPickerConfirm: data => {
+                if (type == 1) {
+                    self.setState({
+                        dictPeople: data[0]
+                    })
+                } else {
+                    self.setState({
+                        otherPeople: data[0]
+                    });
+                }
+            }
+        });
+        Picker.show()
     }
 
     render() {
+        let {dictPeople, otherPeople} = this.state
         return (
             <ScrollView  style={styles.container}>
                 <View style={styles.tipContainer}>
@@ -27,12 +62,14 @@ class Contact extends PureComponent {
                     <Heading1 style={[styles.heading, styles.leftPosition]}>直系亲属联系人</Heading1>
                 </View>
                 <Separator />
-                <TouchableOpacity>
+                <TouchableOpacity onPress={this._initContactPicker.bind(this, 1)}>
                     <View style={styles.commonCellStyle}>
                         <Heading1 style={[styles.leftPosition, styles.heading]}>与本人关系</Heading1>
                         <View style={[styles.rightPosition, styles.secondCommonStyle]}>
-                            <Heading1 style={[styles.secondLeftPosition, styles.heading]}>兄弟</Heading1>
-                            <Image style={[styles.rightArrow]} />
+                            <Heading1 style={[styles.secondLeftPosition, styles.heading]}>
+                                {dictPeople ? dictPeople : '请选择'}
+                            </Heading1>
+                            <Image style={[styles.rightArrow]} source={require('../../img/Public/cell_arrow.png')}/>
                         </View>
                     </View>
                     <Separator />
@@ -42,7 +79,7 @@ class Contact extends PureComponent {
                         <Heading1 style={[styles.leftPosition, styles.heading]}>紧急联系人</Heading1>
                         <View style={[styles.rightPosition, styles.secondCommonStyle]}>
                             <Heading1 style={[styles.secondLeftPosition, styles.heading]}>15#####2342</Heading1>
-                            <Image style={[styles.rightArrow]} />
+                            <Image style={[styles.rightArrow]} source={require('../../img/Public/cell_arrow.png')}/>
                         </View>
                     </View>
                     <Separator />
@@ -52,12 +89,14 @@ class Contact extends PureComponent {
                     <Heading1 style={[styles.heading, styles.leftPosition]}>其他联系人</Heading1>
                 </View>
                 <Separator />
-                <TouchableOpacity>
+                <TouchableOpacity onPress={this._initContactPicker.bind(this, 2)}>
                     <View style={styles.commonCellStyle}>
                         <Heading1 style={[styles.leftPosition, styles.heading]}>与本人关系</Heading1>
                         <View style={[styles.rightPosition, styles.secondCommonStyle]}>
-                            <Heading1 style={[styles.secondLeftPosition, styles.heading]}>同学</Heading1>
-                            <Image style={[styles.rightArrow]} />
+                            <Heading1 style={[styles.secondLeftPosition, styles.heading]}>
+                                {otherPeople ? otherPeople : '请选择'}
+                            </Heading1>
+                            <Image style={[styles.rightArrow]} source={require('../../img/Public/cell_arrow.png')}/>
                         </View>
                     </View>
                     <Separator />
@@ -66,8 +105,8 @@ class Contact extends PureComponent {
                     <View style={styles.commonCellStyle}>
                         <Heading1 style={[styles.leftPosition, styles.heading]}>紧急联系人</Heading1>
                         <View style={[styles.rightPosition, styles.secondCommonStyle]}>
-                            <Heading1 style={[styles.secondLeftPosition, styles.heading]}>于的身份***水淀粉</Heading1>
-                            <Image style={[styles.rightArrow]} />
+                            <Heading1 style={[styles.secondLeftPosition, styles.heading]}>123***999</Heading1>
+                            <Image style={[styles.rightArrow]} source={require('../../img/Public/cell_arrow.png')}/>
                         </View>
                     </View>
                     <Separator />
@@ -121,9 +160,8 @@ const styles = StyleSheet.create({
         marginRight: 5,
     },
     rightArrow: {
-        width: 20,
-        height: 20,
-        backgroundColor: 'red'
+        width: 16,
+        height: 16
     },
     partition: {
         marginTop: 20
@@ -147,7 +185,7 @@ const styles = StyleSheet.create({
         height: 25,
         backgroundColor: 'red'
     },
-    // bottom 
+    // bottom
     bottomContainer: {
         marginTop: 30,
         marginBottom: 30,

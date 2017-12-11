@@ -17,7 +17,8 @@ class ConfirmLoanScene extends PureComponent {
     constructor(props: Object) {
         super(props)
         this.state = {
-            source: {}
+            price: '',
+            days: ''
         }
     }
 
@@ -26,9 +27,22 @@ class ConfirmLoanScene extends PureComponent {
             // this.props.navigation.setParams({ title: '加载中' })
             // this.setState({ source: { uri: this.props.navigation.state.params.url } })
         })
+        let {price, days} = this.props.navigation.state.params
+        this.setState({
+            price, days
+        })
+    }
+
+    immediatelyApply() {
+        // TODO 保存借款
+        let {onGoBack} = this.props.navigation.state.params
+        this.props.navigation.goBack()
+        // this.props.navigation.state.params.refresh();
+        onGoBack({type: 'confirm_loan'})
     }
 
     render() {
+        let {price, days} = this.state
         return (
             <View style={{ flex: 1, backgroundColor: color.background }}>
                 <ScrollView>
@@ -37,7 +51,7 @@ class ConfirmLoanScene extends PureComponent {
                             <View style={[styles.content, this.props.style]}>
                                 <Heading2>借款金额</Heading2>
                                 <View style={{ flex: 1, backgroundColor: 'blue' }} />
-                                <Paragraph style={{ color: '#999999' }}>1500（元）</Paragraph>
+                                <Paragraph style={{ color: '#999999' }}>{price}（元）</Paragraph>
                             </View>
                             <Separator />
                         </TouchableOpacity>
@@ -47,7 +61,7 @@ class ConfirmLoanScene extends PureComponent {
                             <View style={[styles.content, this.props.style]}>
                                 <Heading2>借款期数</Heading2>
                                 <View style={{ flex: 1, backgroundColor: 'blue' }} />
-                                <Paragraph style={{ color: '#999999' }}>14（天）</Paragraph>
+                                <Paragraph style={{ color: '#999999' }}>{days}（天）</Paragraph>
                             </View>
                             <Separator />
                         </TouchableOpacity>
@@ -88,7 +102,7 @@ class ConfirmLoanScene extends PureComponent {
                         <Button title="确认申请"
                             containerStyle={styles.containerStyle}
                             style={styles.style}
-                            onPress={this.immediatelyApply}
+                            onPress={this.immediatelyApply.bind(this)}
                         >
                         </Button>
                     </View>

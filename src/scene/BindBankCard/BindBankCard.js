@@ -53,7 +53,7 @@ class BindBankCard extends PureComponent {
                 bankName: "请选择银行",
                 bankCode: "",
                 phoneNum: "",
-                messageNum: ""  
+                messageNum: ""
             },
             pickerViewShow: false,
             pickerViewSelectedValue: '2'
@@ -73,8 +73,8 @@ class BindBankCard extends PureComponent {
                 {/* 所属银行 */}
                 <View style={styles.rowcontainer}>
                     <Text style={styles.titleText}>选择银行</Text>
-                    <TouchableOpacity 
-                        style={styles.middelContentSelect} 
+                    <TouchableOpacity
+                        style={styles.middelContentSelect}
                         onPress={() => {this._selectBankName(this)}}>
                         <Text style={{fontSize: 16}}>{this.state.submitData.bankName}</Text>
                     </TouchableOpacity>
@@ -83,7 +83,7 @@ class BindBankCard extends PureComponent {
                 {/* 银行卡号 */}
                 <View style={styles.rowcontainer}>
                     <Text style={styles.titleText}>银行卡号</Text>
-                    <TextInput 
+                    <TextInput
                         style={styles.inputContent}
                         keyboardType="numeric"
                         ref="bankInput"
@@ -92,7 +92,7 @@ class BindBankCard extends PureComponent {
                 {/* 手机号 */}
                 <View style={styles.rowcontainer}>
                     <Text style={styles.titleText}>手机号</Text>
-                    <TextInput 
+                    <TextInput
                         style={styles.inputContent}
                         keyboardType="numeric"
                         maxLength = {11}
@@ -102,7 +102,7 @@ class BindBankCard extends PureComponent {
                 {/* 验证码 */}
                 <View style={styles.rowcontainer}>
                     <Text style={styles.titleText}>验证码</Text>
-                    <TextInput 
+                    <TextInput
                         style={styles.inputContent}
                         keyboardType="numeric"
                         ref="messageInput"
@@ -137,19 +137,19 @@ class BindBankCard extends PureComponent {
                         {this._renderPickerViewItem()}
                     </Picker>
                 </View>
-                
+
             )
-        } 
+        }
         return null;
     }
 
     _renderPickerViewItem() {
-        return pickerViewOptions.map((option) => <Picker.Item label={option.name} value={option.value} key={option.id} />) 
+        return pickerViewOptions.map((option) => <Picker.Item label={option.name} value={option.value} key={option.id} />)
     }
 
     // event
     _moreLoanBtnClicked(e) {
-        
+
     }
 
     // picker bank name change
@@ -275,9 +275,9 @@ const styles = StyleSheet.create({
     bindBankTitle: {
         fontSize: 16,
         color: 'white',
-        fontWeight: '600' 
+        fontWeight: '600'
     },
-    // encrypt 
+    // encrypt
     encryptContainer: {
         marginTop: 40,
         flexDirection: 'row',
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     },
     encryptLogo: {
         backgroundColor: 'red',
-        width: 15, 
+        width: 15,
         height: 15,
         marginRight: 8
     },
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     },
     // picker view
     pickerContainer: {
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         width: ScreenWidth,
         height: ScreenHeight - 64, // ????? 不同屏幕，navigationBar+statusbar高度不同，尤其是安卓
         position: 'absolute',

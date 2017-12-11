@@ -21,16 +21,30 @@ class MineScene extends PureComponent {
     constructor(props: Object) {
         super(props)
 
+        this.state = {
+            price: '1500',
+            days: '14'
+        }
         { (this: any).immediatelyApply = this.immediatelyApply.bind(this) }
+    }
+
+    componentDidMount() {
+
     }
 
     async immediatelyApply() {
         // this.props.navigation.navigate('ConfirmLoanScene', { info: info })
         let userInfo = await this._getUserInfo()
+        let {price, days} = this.state
         if (userInfo) {
-            this.props.navigation.navigate('ConfirmLoanScene', {title: '借款'})
+            this.props.navigation.navigate('ConfirmLoanScene', {
+                title: '借款', price, days,
+                onGoBack: () => {
+                    console.log(123)
+                }
+            })
         } else {
-            this.props.navigation.navigate('PhoneInputLogin', {title: '登陆', jumpStyle: 1})
+            this.props.navigation.navigate('PhoneInputLogin', {title: '登陆', jumpStyle: 1, price, days})
         }
     }
 
@@ -40,6 +54,22 @@ class MineScene extends PureComponent {
         } catch(error) {
 
         }
+    }
+
+    _bindBankCard() {
+        this.props.navigation.navigate('BindBankCard')
+    }
+
+    _changedPrice(value) {
+        this.setState({
+            price: value
+        })
+    }
+
+    _changedDays(value) {
+        this.setState({
+            days: value
+        })
     }
 
     render() {
@@ -64,27 +94,40 @@ class MineScene extends PureComponent {
                         </View>
                         <Separator />
                     </View>
-                    <View>
+                    <View style={{display: 'none'}}>
+                    {/* <View> */}
                         <View style={styles.infoContent}>
                             <View style={styles.infoLimit}>
                                 <View style={{flex: 1, alignItems: 'center'}}>
-                                    <HeadingBig>1500</HeadingBig>
+                                    <HeadingBig>{this.state.price}</HeadingBig>
                                     <Heading2>借款金额(元)</Heading2>
                                 </View>
-                                <View style={{flex: 1, alignItems: 'center'}}>
-                                    <HeadingBig>14</HeadingBig>
+                                <View style={{flex: 1, alignItems: 'center', borderLeftWidth: screen.onePixel, borderLeftColor: '#ccc'}}>
+                                    <HeadingBig>{this.state.days}</HeadingBig>
                                     <Heading2>借款期数(天)</Heading2>
                                 </View>
                             </View>
                             <Separator />
                         </View>
                         <View style={styles.sliderBox}>
-                            <Slider minimumValue={200} maximumValue={1500} step={100} value={1500}></Slider>
+                            <Slider
+                                minimumValue={200}
+                                maximumValue={1500}
+                                step={100}
+                                value={1500}
+                                onSlidingComplete={this._changedPrice.bind(this)}
+                            ></Slider>
                             <View style={styles.sliderInfo}>
                                 <Text>200元</Text>
                                 <Text>1500元</Text>
                             </View>
-                            <Slider minimumValue={7} maximumValue={14} step={7} value={14}></Slider>
+                            <Slider
+                                minimumValue={7}
+                                maximumValue={14}
+                                step={7}
+                                value={14}
+                                onSlidingComplete={this._changedDays.bind(this)}
+                            ></Slider>
                             <View  style={styles.sliderInfo}>
                                 <Text>7天</Text>
                                 <Text>14天</Text>
@@ -104,12 +147,36 @@ class MineScene extends PureComponent {
                         </View>
                         <View style={{flex: 1, alignItems: 'center'}}><Paragraph>不向学生提供服务</Paragraph></View>
                     </View>
-                    <View>
-                        <View style={[styles.justifyContent, styles.evaluateTitle]}><Heading1>经我们仔细评估您的信用额度为：</Heading1></View>
-                        <View style={[styles.justifyContent]}><Text>1500元</Text></View>
+                    <View style={{display: 'none'}}>
+                        <View style={[styles.justifyContent, styles.evaluateTitle]}><Heading1 style={{fontSize: 18}}>经我们仔细评估您的信用额度为：</Heading1></View>
+                        <View style={[styles.justifyContent, styles.evaluatePrice]}>
+                            <Text style={styles.evaluateValue}>1500</Text>
+                            <Text>元</Text>
+                        </View>
                         <View style={[styles.justifyContent, styles.evaluateTitle]}>
                             <Heading1>离借款只差一步啦！</Heading1>
-                            <Heading1 style={{color: color.theme}}>绑定收款银行卡&gt;&gt;</Heading1>
+                            <Heading1 onPress={this._bindBankCard.bind(this)} style={{color: color.theme}}>绑定收款银行卡&gt;&gt;</Heading1>
+                        </View>
+                    </View>
+                    <View style={{display: 'none'}}>
+                        <View style={[styles.justifyContent, styles.evaluateTitle]}><Heading1 style={{fontSize: 18}}>额度评估中...</Heading1></View>
+                        <View style={[styles.justifyContent, styles.evaluateLoading]}>
+                            <Text>雷达图片</Text>
+                            <Image />
+                        </View>
+                        <View style={[styles.justifyContent, styles.evaluateTitle]}>
+                            <Heading1>离借款只差一步啦！</Heading1>
+                            <Heading1 onPress={this._bindBankCard.bind(this)} style={{color: color.theme}}>绑定收款银行卡&gt;&gt;</Heading1>
+                        </View>
+                    </View>
+                    <View style={[styles.auditBox]}>
+                        <View style={[styles.auditItem]}>
+                            <Text style={[styles.auditTitle]}>审核中</Text>
+                            <Text style={[styles.auditDesc]}>已进入风控审核状态，请耐心等待</Text>
+                        </View>
+                        <View style={[styles.auditItem]}>
+                            <Text style={[styles.auditTitle, styles.textGray]}>申请提交成功2017-12-12 15:30</Text>
+                            <Text style={[styles.auditDesc, styles.textGray]}>申请借款200元，期限7天，手续费19.6元</Text>
                         </View>
                     </View>
                 </ScrollView>
@@ -135,6 +202,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         margin: 10,
+    },
+    evaluateValue: {
+        fontSize: 50
     },
     avatar: {
         width: 50,
@@ -193,6 +263,25 @@ const styles = StyleSheet.create({
     evaluateTitle: {
         paddingTop: 40,
         paddingBottom: 50
+    },
+    evaluatePrice: {
+        paddingTop: 30,
+        paddingBottom: 80
+    },
+    auditBox: {
+        paddingTop: 30,
+        paddingLeft: 60,
+        paddingRight: 15
+    },
+    auditTitle: {
+        fontSize: 18,
+        paddingBottom: 5
+    },
+    auditItem: {
+        paddingBottom: 15
+    },
+    textGray: {
+        color: '#666'
     }
 });
 

@@ -26,13 +26,17 @@ class Operator extends PureComponent {
             <ScrollView  style={styles.container}>
                 <View style={styles.inputContainer}>
                     <Separator />
-                    <TextInput 
+                    <TextInput
                         style={[styles.phoneInput, styles.commonInput]}
-                        placeholder="请输入手机号" />
+                        placeholder="请输入手机号"
+                        maxLength={11}
+                    />
                     <Separator />
-                    <TextInput 
+                    <TextInput
                         style={[styles.pwdInput, styles.commonInput]}
-                        placeholder="请输入服务密码" />
+                        placeholder="请输入服务密码"
+                        maxLength={6}
+                    />
                     <Separator />
                 </View>
                 <View style={styles.promptContainer}>
@@ -40,8 +44,8 @@ class Operator extends PureComponent {
                     <Paragraph style={[styles.tipTitle]}>1、请输入正确的运营商（移动、联通、电信）服务密码，如若忘记可通过拨打运营商服务电话或者登录网上营业厅找回密码；</Paragraph>
                     <Paragraph style={[styles.tipTitle]}>2、运营商认证需要2～3分钟，请耐心等待；</Paragraph>
                 </View>
-                <TouchableOpacity 
-                    style={styles.authenticationBtn} 
+                <TouchableOpacity
+                    style={styles.authenticationBtn}
                     onPress={() => this.completeAuth()}>
                     <Text style={styles.authenticationTitle}>认证中</Text>
                 </TouchableOpacity>
