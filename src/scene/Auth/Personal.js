@@ -36,6 +36,10 @@ class Personal extends PureComponent {
         // this._initEducationalPicker()
     }
 
+    componentWillUnmount() {
+        Picker.hide();
+    }
+
     _createAreaData() {
         let data = [];
         let len = area.length;
@@ -239,7 +243,6 @@ const styles = StyleSheet.create({
     encryptImg: {
         width: 15,
         height: 20,
-        // backgroundColor: 'red'
     },
     encryptTitle:{
         marginLeft: 5,

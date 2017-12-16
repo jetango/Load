@@ -1,34 +1,19 @@
 //import liraries
 import React, { PureComponent } from 'react'
-import { FlatList, Dimensions, Picker, View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { FlatList, Dimensions, View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { color, DetailCell, NavigationItem, SpacingView, Button, Separator } from '../../widget'
-
+import Picker from 'react-native-picker'
 
 
 let ScreenWidth = Dimensions.get('window').width;
 let ScreenHeight = Dimensions.get('window').height;
 
-let pickerViewOptions = [{
-    id: "1",
-    name: "中国工商银行",
-    value: "1"
-}, {
-    id: "2",
-    name: "招商银行",
-    value: "2"
-}, {
-    id: "3",
-    name: "中信银行",
-    value: "3"
-}, {
-    id: "4",
-    name: "中国银行",
-    value: "4"
-}, {
-    id: "5",
-    name: "中国农业银行",
-    value: "5"
-}];
+let pickerViewOptions = ["中国工商银行", "招商银行", "中信银行", "中国银行", "中国农业银行"];
+
+const imagesInfo = {
+    bulb: require('../../img/Auth/icon_bind_bank_bulb.png'),
+    downIcon: require('../../img/Auth/icon_bind_bank_down.png'),
+};
 
 class BindBankCard extends PureComponent {
     // 导航栏设置
@@ -55,9 +40,37 @@ class BindBankCard extends PureComponent {
                 phoneNum: "",
                 messageNum: ""
             },
-            pickerViewShow: false,
-            pickerViewSelectedValue: '2'
+            pickerViewSelectedValue: pickerViewOptions[0]
         };
+    }
+
+    componentWillUnmount() {
+        Picker.hide();
+    }
+
+    _showBankNamePickerView() {
+        var self = this;
+        Picker.init({
+            pickerData: pickerViewOptions,
+            pickerConfirmBtnText: '确定',
+            pickerCancelBtnText: '取消',
+            pickerTitleText: '',
+            pickerConfirmBtnColor: [0, 0, 0, 1],
+            pickerCancelBtnColor: [0, 0, 0, 1],
+            pickerToolBarBg: [255, 255, 255, 1],
+            pickerBg: [255, 255, 255, 1],
+            selectedValue: [self.state.pickerViewSelectedValue],
+            onPickerConfirm: data => {
+                self.setState({
+                    submitData: {
+                        authName: self.state.submitData.authName,
+                        bankName: data[0]
+                    },
+                    pickerViewSelectedValue: data[0]
+                });
+            }
+        });
+        Picker.show();
     }
 
     render() {
@@ -68,18 +81,14 @@ class BindBankCard extends PureComponent {
                 <View style={styles.rowcontainer}>
                     <Text style={styles.titleText}>持卡人</Text>
                     <Text style={styles.middelContentText}>{this.state.submitData.authName}</Text>
-                    <Image style={styles.rightIcon} />
+                    <Image resizeMode="cover" style={styles.rightIcon} source={imagesInfo.bulb} />
                 </View>
                 {/* 所属银行 */}
-                <View style={styles.rowcontainer}>
+                <TouchableOpacity style={styles.rowcontainer} onPress={this._showBankNamePickerView.bind(this)}>
                     <Text style={styles.titleText}>选择银行</Text>
-                    <TouchableOpacity
-                        style={styles.middelContentSelect}
-                        onPress={() => {this._selectBankName(this)}}>
-                        <Text style={{fontSize: 16}}>{this.state.submitData.bankName}</Text>
-                    </TouchableOpacity>
-                    <Image style={styles.rightIcon} />
-                </View>
+                    <Text style={{fontSize: 16, flex: 1}}>{this.state.submitData.bankName}</Text>
+                    <Image resizeMode="cover" style={styles.rightIcon} source={imagesInfo.downIcon} />
+                </TouchableOpacity>
                 {/* 银行卡号 */}
                 <View style={styles.rowcontainer}>
                     <Text style={styles.titleText}>银行卡号</Text>
@@ -106,8 +115,8 @@ class BindBankCard extends PureComponent {
                         style={styles.inputContent}
                         keyboardType="numeric"
                         ref="messageInput"
-                        placeholder="请输入验证码"/>
-                    <TouchableOpacity style={styles.msgContentBtn}>
+                        placeholder="请输入验证码"/> 
+                    <TouchableOpacity style={styles.msgContentBtn} onPress={this._messageBtnDidClicked.bind(this)}>
                         <Text style={styles.msgContentTitle}>点击获取</Text>
                     </TouchableOpacity>
                 </View>
@@ -115,56 +124,17 @@ class BindBankCard extends PureComponent {
                     <Text style={styles.bindBankTitle}>确定绑卡</Text>
                 </TouchableOpacity>
                 <View style={styles.encryptContainer}>
-                    <Image style={styles.encryptLogo} />
+                    <Image resizeMode="cover" style={styles.encryptLogo} source={require('../../img/Public/icon_bank_encryption_green.png')} />
                     <Text style={styles.encryptText}>银行级数据加密防护</Text>
                 </View>
-                {/* <TouchableOpacity style={styles.moreLoanBtn} onPress={this._moreLoanBtnClicked}>
-                    <Text style={styles.moreLoanTitle}>更多借款，请点击查看>></Text>
-                </TouchableOpacity> */}
-                {this._renderPickerView()}
             </View>
         )
     }
 
-    _renderPickerView() {
-        if (this.state.pickerViewShow) {
-            return (
-                <View style={styles.pickerContainer}>
-                    <Picker
-                        style={styles.pickerView}
-                        selectedValue={this.state.pickerViewSelectedValue}
-                        onValueChange={(itemValue, itemPosition) => {this._bankNameChanged(itemValue, itemPosition, this)}}>
-                        {this._renderPickerViewItem()}
-                    </Picker>
-                </View>
-
-            )
-        }
-        return null;
-    }
-
-    _renderPickerViewItem() {
-        return pickerViewOptions.map((option) => <Picker.Item label={option.name} value={option.value} key={option.id} />)
-    }
-
-    // event
-    _moreLoanBtnClicked(e) {
-
-    }
-
-    // picker bank name change
-    _bankNameChanged(itemValue, itemPosition, self) {
-        var selectedObj = pickerViewOptions[itemPosition];
-        self.state.submitData.bankName = selectedObj.name;
-        self.setState({
-            pickerViewSelectedValue: itemValue
-        });
-        self._selectBankName(self);
-    }
-
-    _selectBankName(self) {
-        // 通过设置state来更改UI组件的是否展示
-        self.setState({pickerViewShow: !self.state.pickerViewShow});
+    _messageBtnDidClicked() {
+        // 如果要进入下一个页面，因为Picker是全局的，所以需要先隐藏
+        // Picker.hide();
+        // this.props.navigation.navigate('Personal');
     }
 };
 
@@ -214,12 +184,13 @@ const styles = StyleSheet.create({
 
     // row style
     rowcontainer: {
+        width: ScreenWidth,
         backgroundColor: 'white',
         flexDirection: 'row',
         alignItems: 'center',
         borderBottomWidth: 0.5,
         borderBottomColor: '#e6e6e6',
-        height: 45
+        height: 45,
     },
     titleText: {
         width: 80,
@@ -243,7 +214,7 @@ const styles = StyleSheet.create({
     rightIcon: {
         width: 20,
         height: 20,
-        backgroundColor: 'red',
+        // backgroundColor: 'red',
         marginRight: 15
     },
     msgContentBtn: {
@@ -285,9 +256,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     encryptLogo: {
-        backgroundColor: 'red',
-        width: 15,
-        height: 15,
+        width: 13, 
+        height: 16,
         marginRight: 8
     },
     encryptText: {

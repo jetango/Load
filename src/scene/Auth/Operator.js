@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
     encryptImg: {
         width: 13, 
         height: 16,
-        // backgroundColor: 'red',
         marginRight: 10
     },
     encryptTitle: {

@@ -52,7 +52,8 @@ class Center extends PureComponent {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View>
+                <View style={styles.bottomContainer}>
+                    <Image resizeMode="cover" style={styles.encryptImg} source={require('../../img/Public/icon_bank_encryption_orange.png')}/>
                     <Paragraph style={styles.footer}>银行级数据加密保护</Paragraph>
                 </View>
             </View>
@@ -70,9 +71,22 @@ const styles = StyleSheet.create({
         paddingTop: 8,
         paddingBottom: 8
     },
-    footer: {
-        paddingTop: 20,
-        paddingBottom: 20
+    bottomContainer: {
+        marginTop: 30,
+        marginBottom: 30,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    encryptImg: {
+        width: 15,
+        height: 20,
+    },
+    footer:{
+        marginLeft: 8,
+        fontSize: 14,
+        fontWeight: '700',
+        color:'#a1a0a0'
     },
     heading: {
         paddingTop: 10,
