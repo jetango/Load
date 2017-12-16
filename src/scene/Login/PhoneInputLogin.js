@@ -1,8 +1,9 @@
 //import liraries
 import React, { PureComponent } from 'react'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { View, Dimensions, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { color, DetailCell, NavigationItem, SpacingView, Button, Separator } from '../../widget'
 
+var {width, height, scale} = Dimensions.get('window');
 
 class PhoneInputLogin extends PureComponent {
     // 导航栏设置
@@ -33,9 +34,9 @@ class PhoneInputLogin extends PureComponent {
     render() {
         return (
             <View style={styles.container}>
-                <Image style={styles.logoImg} />
-                <View>
-                    <Image style={styles.phoneImg}/>
+                <Image  resizeMode="cover" style={styles.logoImg} source={require('../../img/Login/icon_login_logo.png')} />
+                <View style={styles.phoneContainer}>
+                    <Image resizeMode="cover" style={styles.phoneImg} source={require('../../img/Login/icon_login_phone.png')} />
                     <TextInput
                         style={styles.phoneInput}
                         autoFocus={true}
@@ -45,7 +46,7 @@ class PhoneInputLogin extends PureComponent {
                     <TouchableOpacity
                         style={[styles.closeImg, this.state.isCloseHidden ? styles.closeImgHidden : styles.closeImgShow]}
                         onPress={() => this.deletePhoneNum(this)}>
-                        <Image  style={{width: 20, height: 20}}/>
+                        <Image resizeMode="center"  style={{width: 20, height: 20}}  source={require('../../img/Public/icon_close.png')}/>
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity
@@ -79,11 +80,11 @@ class PhoneInputLogin extends PureComponent {
             // 进入下一个页面 TO_DO
             // 请求API，获取数据，判断是否已经注册过，注册就跳转到登陆，否则注册页面
             let test = Math.round(Math.random() * 10) % 2
-            if (test == 0) {
-                this.props.navigation.navigate('PasswordLogin')
-            } else {
+            // if (test == 0) {
+            //     this.props.navigation.navigate('PasswordLogin')
+            // } else {
                 this.props.navigation.navigate('MessagePwdRegister')
-            }
+            // }
             // if (this.props.navigation.state.params.jumpStyle == "1") { // 登录
             //     this.props.navigation.navigate('PasswordLogin');
             // } else if (this.props.navigation.state.params.jumpStyle == "2") { // 注册
@@ -110,43 +111,42 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     logoImg: {
-        backgroundColor: 'red',
         borderRadius: 6,
-        width: 80,
-        height: 80,
+        width: 100,
+        height: 100,
         marginTop: 120,
+    },
+    phoneContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 1.0 / scale,
+        borderColor: '#5e70ff',
+        borderRadius: 4,
+        marginTop: 50,
+        height: 40,
+        width: 300,
     },
     phoneImg: {
         width: 20,
         height: 30,
-        backgroundColor: 'red',
-        position: 'absolute',
-        left: 5,
-        top: 55
+        marginLeft: 10,
+        marginRight: 10
+    },
+    phoneInput: {
+        height: 40,
+        fontSize: 16,
+        flex: 1,
     },
     closeImg: {
-        width: 30,
-        height: 30,
-        backgroundColor: 'blue',
-        position: 'absolute',
-        right: 5,
-        top: 55
+        width: 20,
+        height: 20,
+        marginRight: 10
     },
     closeImgShow: {
         display: 'flex'
     },
     closeImgHidden: {
         display: 'none'
-    },
-    phoneInput: {
-        borderWidth: 0.5,
-        borderColor: '#5e70ff',
-        borderRadius: 4,
-        height: 40,
-        fontSize: 16,
-        width: 300,
-        paddingLeft: 30,
-        marginTop: 50,
     },
     //
     nextButton: {

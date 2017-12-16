@@ -1,9 +1,11 @@
 //import liraries
 import React, { PureComponent } from 'react'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, AsyncStorage} from 'react-native'
+import { View, Text, Dimensions, TextInput, StyleSheet, TouchableOpacity, Image, AsyncStorage} from 'react-native'
 import { color, DetailCell, NavigationItem, SpacingView, Button, Separator } from '../../widget'
 import { NavigationActions } from 'react-navigation'
 const STORAGE_USER = '@AsyncStorage:user_info'
+
+var {width, height, scale} = Dimensions.get('window');
 
 class PasswordLogin extends PureComponent {
     // 导航栏设置
@@ -27,10 +29,10 @@ class PasswordLogin extends PureComponent {
     render() {
         return (
             <View style={styles.container}>
-                <Image style={styles.logoImg} />
+                <Image resizeMode="cover" style={styles.logoImg} source={require('../../img/Login/icon_login_pwdLogo.png')} />
                 <Text style={styles.phoneNum}>18211110000</Text>
-                <View>
-                    <Image style={styles.phoneImg}/>
+                <View style={styles.pwdInputContainer}>
+                    <Image resizeMode="center" style={styles.phoneImg} source={require('../../img/Login/icon_login_lock.png')}/>
                     <TextInput
                         style={styles.phoneInput}
                         autoFocus={true}
@@ -128,37 +130,38 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginTop: 20
     },
+    //
+    pwdInputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 1.0 / scale,
+        borderColor: '#5e70ff',
+        borderRadius: 4,
+        height: 40,
+        width: 300,
+        marginTop: 30,
+    },
     logoImg: {
-        backgroundColor: 'red',
-        borderRadius: 6,
         width: 100,
-        height: 100,
+        height: 112,
         marginTop: 40,
     },
     phoneImg: {
         width: 20,
-        height: 30,
-        backgroundColor: 'red',
-        position: 'absolute',
-        left: 5,
-        top: 35
+        height: 40,
+        marginLeft: 15,
+        marginRight: 15
     },
     phoneInput: {
-        borderWidth: 0.5,
-        borderColor: '#5e70ff',
-        borderRadius: 4,
-        height: 40,
         fontSize: 16,
-        width: 300,
-        paddingLeft: 30,
-        marginTop: 30,
+        flex: 1
     },
     //
     nextButton: {
         width: 300,
         height: 40,
         borderRadius: 30,
-        marginTop: 10,
+        marginTop: 20,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'

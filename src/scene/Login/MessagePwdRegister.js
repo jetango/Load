@@ -1,8 +1,9 @@
 //import liraries
 import React, { PureComponent } from 'react'
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native'
+import { View, Text, Dimensions, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native'
 import { color, DetailCell, NavigationItem, SpacingView, Button, Separator } from '../../widget'
 
+var {width, height, scale} = Dimensions.get('window');
 
 class MessagePwdRegister extends PureComponent {
     // 导航栏设置
@@ -25,10 +26,10 @@ class MessagePwdRegister extends PureComponent {
     render() {
         return (
             <View style={styles.container}>
-                <Image style={styles.logoImg} />
+                <Image resizeMode="cover" style={styles.logoImg} source={require('../../img/Login/icon_login_pwdLogo.png')} />
                 <Text style={styles.phoneNum}>18211110000</Text>
-                <View style={styles.messageNumContainer}>
-                    <Image style={styles.phoneImg}/>
+                <View style={[styles.messageNumContainer, styles.inputContainer]}>
+                    <Image resizeMode="center" style={styles.phoneImg} source={require('../../img/Login/icon_login_checkmsg.png')} />
                     <TextInput
                         style={styles.phoneInput}
                         autoFocus={true}
@@ -41,8 +42,8 @@ class MessagePwdRegister extends PureComponent {
                         <Text style={styles.messageNumTitle}>获取验证码</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.pwdContainer}>
-                    <Image style={styles.phoneImg}/>
+                <View style={[styles.pwdContainer, styles.inputContainer]}>
+                    <Image resizeMode="center" style={styles.phoneImg} source={require('../../img/Login/icon_login_lock.png')} />
                     <TextInput
                         style={styles.phoneInput}
                         maxLength={16}
@@ -66,7 +67,7 @@ class MessagePwdRegister extends PureComponent {
                     <TouchableOpacity
                         style={styles.checkProtocoBtn}
                         onPress={this.checkBtnDidClicked}>
-                        <Image style={styles.checkProtocoImg} />
+                        <Image resizeMode="center" style={styles.checkProtocoImg} source={require('../../img/Public/icon_check_unselected.png')} />
                     </TouchableOpacity>
                     <Text style={styles.pureProtocol}>注册即同意</Text>
                     <TouchableOpacity
@@ -148,31 +149,31 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     logoImg: {
-        backgroundColor: 'red',
-        borderRadius: 6,
         width: 50,
-        height: 50,
+        height: 56,
         marginTop: 40,
     },
     phoneImg: {
         width: 20,
         height: 30,
-        backgroundColor: 'red',
-        position: 'absolute',
-        left: 5,
-        top: 5
+        marginLeft: 15, 
+        marginRight: 15
     },
     messageNumContainer: {
         marginTop: 30,
     },
-    phoneInput: {
-        borderWidth: 0.5,
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 1.0 / scale,
         borderColor: '#5e70ff',
         borderRadius: 4,
         height: 40,
-        fontSize: 16,
         width: 300,
-        paddingLeft: 30,
+    },
+    phoneInput: {
+        fontSize: 16,
+        flex: 1
     },
     pwdContainer: {
         marginTop: 15
@@ -182,10 +183,6 @@ const styles = StyleSheet.create({
         borderLeftWidth: 0.5,
         width: 100,
         height: 26,
-        position: 'absolute',
-        top: 7,
-        right: 0,
-        // backgroundColor: 'blue',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center'
@@ -233,7 +230,6 @@ const styles = StyleSheet.create({
     checkProtocoImg: {
         width: 20,
         height: 20,
-        backgroundColor: 'red',
         marginLeft: -10
     },
     pureProtocol: {
