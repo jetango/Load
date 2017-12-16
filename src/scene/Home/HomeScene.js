@@ -71,7 +71,7 @@ class MineScene extends PureComponent {
             days: value
         })
     }
-
+    
     render() {
         return (
             <View style={{ flex: 1, backgroundColor: color.background }}>
@@ -90,6 +90,7 @@ class MineScene extends PureComponent {
                     </Swiper>
                     <View style={styles.infoContent}>
                         <View style={styles.infoTitle}>
+                            <Image style={styles.trumpetImg} resizeMode="center" source={require('../../img/Home/icon_homepage_trumpet.png')} />
                             <Text>尾号9262，正常还款，成功提额至1200元</Text>
                         </View>
                         <Separator />
@@ -169,14 +170,21 @@ class MineScene extends PureComponent {
                             <Heading1 onPress={this._bindBankCard.bind(this)} style={{color: color.theme}}>绑定收款银行卡&gt;&gt;</Heading1>
                         </View>
                     </View>
-                    <View style={[styles.auditBox]}>
-                        <View style={[styles.auditItem]}>
-                            <Text style={[styles.auditTitle]}>审核中</Text>
-                            <Text style={[styles.auditDesc]}>已进入风控审核状态，请耐心等待</Text>
+                    <View style={styles.processContainer}>
+                        <View style={styles.imageContainer}>
+                            <Image style={[styles.circleImg, styles.topPosition]} resizeMode="center" source={require('../../img/Loan/icon_audit_snow.png')} />
+                            <Image style={styles.verticalImg} resizeMode="center" source={require('../../img/Loan/icon_audit_dashed.png')} />
+                            <Image style={[styles.circleImg, styles.bottomPosition]} resizeMode="center" source={require('../../img/Loan/icon_audit_selected.png')} />
                         </View>
-                        <View style={[styles.auditItem]}>
-                            <Text style={[styles.auditTitle, styles.textGray]}>申请提交成功2017-12-12 15:30</Text>
-                            <Text style={[styles.auditDesc, styles.textGray]}>申请借款200元，期限7天，手续费19.6元</Text>
+                        <View style={[styles.auditBox]}>
+                            <View style={[styles.auditItem]}>
+                                <Text style={[styles.auditTitle]}>审核中</Text>
+                                <Text style={[styles.auditDesc]}>已进入风控审核状态，请耐心等待</Text>
+                            </View>
+                            <View style={[styles.auditItem]}>
+                                <Text style={[styles.auditTitle, styles.textGray]}>申请提交成功2017-12-12 15:30</Text>
+                                <Text style={[styles.auditDesc, styles.textGray]}>申请借款200元，期限7天，手续费19.6元</Text>
+                            </View>
                         </View>
                     </View>
                 </ScrollView>
@@ -220,7 +228,14 @@ const styles = StyleSheet.create({
     },
     infoTitle: {
         height: 40,
-        justifyContent: 'center'
+        flexDirection: 'row',
+        alignItems: 'center',
+        // justifyContent: 'center'
+    },
+    trumpetImg: {
+        width: 20,
+        height: 20,
+        marginRight: 10
     },
     infoLimit: {
         flexDirection: 'row',
@@ -268,9 +283,31 @@ const styles = StyleSheet.create({
         paddingTop: 30,
         paddingBottom: 80
     },
+    //
+    processContainer: {
+        flexDirection: 'row',
+        marginLeft: 20,
+    },
+    imageContainer: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: 20,
+        paddingTop: 30,
+    },
+    circleImg: {
+        width: 20,
+        height: 20
+    },
+    topPosition: {
+        marginTop: 5,
+    },
+    verticalImg: {
+        width: 40,
+        height: 40,
+    },
     auditBox: {
         paddingTop: 30,
-        paddingLeft: 60,
+        paddingLeft: 20,
         paddingRight: 15
     },
     auditTitle: {

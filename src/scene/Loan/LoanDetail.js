@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react'
-import { FlatList, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native'
+import { FlatList, Dimensions, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native'
 import { color, DetailCell, NavigationItem, SpacingView, Button, Separator } from '../../widget'
 import LoanListCell from './LoanListCell'
 import LoanListData from '../../mockData/LoanListData'
 import { screen, system, tool , px2dp} from '../../common'
 import { Heading1, Heading2, Paragraph, HeadingBig } from '../../widget/Text'
+
+var {width, height, scale} = Dimensions.get('window');
 
 class LoanDetail extends PureComponent {
     static navigationOptions = ({ navigation }) => ({
@@ -60,14 +62,22 @@ class LoanDetail extends PureComponent {
                 <View style={[styles.container, styles.prossBox]}>
                     <Heading1>申请进度</Heading1>
                 </View>
-                <View style={[styles.auditBox]}>
-                    <View style={[styles.auditItem]}>
-                        <Text style={[styles.auditTitle]}>审核中</Text>
-                        <Text style={[styles.auditDesc]}>已进入风控审核状态，请耐心等待</Text>
+                <View style={styles.processContainer}>
+                    <View style={styles.imageContainer}>
+                        <Image style={styles.circleImg} resizeMode="center" source={require('../../img/Loan/icon_audit_selected.png')} />
+                        <Image style={styles.verticalImg} resizeMode="center" source={require('../../img/Loan/icon_loan_light_vertical.png')} />
+                        <Image style={styles.verticalImg} resizeMode="center" source={require('../../img/Loan/icon_loan_gray_vertical.png')} />
+                        <Image style={styles.circleImg} resizeMode="center" source={require('../../img/Loan/icon_loan_gray_selected.png')} />
                     </View>
-                    <View style={[styles.auditItem]}>
-                        <Text style={[styles.auditTitle, styles.textGray]}>申请提交成功2017-12-12 15:30</Text>
-                        <Text style={[styles.auditDesc, styles.textGray]}>申请借款200元，期限7天，手续费19.6元</Text>
+                    <View style={[styles.auditBox]}>
+                        <View style={[styles.auditItem]}>
+                            <Text style={[styles.auditTitle]}>审核中</Text>
+                            <Text style={[styles.auditDesc]}>已进入风控审核状态，请耐心等待</Text>
+                        </View>
+                        <View style={[styles.auditItem]}>
+                            <Text style={[styles.auditTitle, styles.textGray]}>申请提交成功2017-12-12 15:30</Text>
+                            <Text style={[styles.auditDesc, styles.textGray]}>申请借款200元，期限7天，手续费19.6元</Text>
+                        </View>
                     </View>
                 </View>
             </ScrollView>
@@ -76,6 +86,28 @@ class LoanDetail extends PureComponent {
 }
 
 const styles = StyleSheet.create({
+    processContainer: {
+        flexDirection: 'row',
+        backgroundColor: '#fff',
+        paddingLeft: 15
+    },
+    imageContainer: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: 20,
+        paddingTop: 20,
+        marginRight: 15
+    },
+    circleImg: {
+        width: 20,
+        height: 20
+    },
+    verticalImg: {
+        width: 20,
+        height: 20
+    },
+
+
     container: {
         flex: 1,
         backgroundColor: color.background
@@ -90,13 +122,13 @@ const styles = StyleSheet.create({
         paddingRight: 15,
         borderBottomWidth: screen.onePixel,
         borderBottomColor: '#e9e9ef',
-        fontSize: 14
     },
     detailBox: {
         backgroundColor: '#fff',
         marginTop: 15
     },
     headlineText: {
+        fontSize: 14,
         flex: 1
     },
     rightMoreBtn: {
@@ -117,7 +149,7 @@ const styles = StyleSheet.create({
     auditBox: {
         backgroundColor: '#fff',
         paddingRight: 15,
-        paddingLeft: 60,
+        // paddingLeft: 60,
         paddingTop: 15,
         paddingBottom: 30,
         marginBottom: 30
