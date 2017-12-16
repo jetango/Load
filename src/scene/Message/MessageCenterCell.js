@@ -9,7 +9,7 @@ class MessageCenterCell extends PureComponent {
         return (
             <View style={styles.container}>
                 <View style={styles.headlineContainer}>
-                    <Image style={styles.headlineImg} />
+                    <Image resizeMode="center" style={styles.headlineImg} source={require('../../img/Mine/icon_message_center.png')} />
                     <Text style={styles.headlineText}>{info.title}</Text>
                     <Text style={styles.timeText}>{info.time}</Text>
                 </View>
@@ -32,9 +32,10 @@ const styles = StyleSheet.create({
         height: 50
     },
     headlineImg: {
-        width: 30,
-        height: 30,
-        backgroundColor: 'red',
+        width: 20,
+        height: 20,
+        marginRight: 10
+        // backgroundColor: 'red',
     },
     headlineText: {
         flex: 1,

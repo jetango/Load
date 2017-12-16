@@ -50,7 +50,7 @@ class Operator extends PureComponent {
                     <Text style={styles.authenticationTitle}>认证中</Text>
                 </TouchableOpacity>
                 <View style={styles.encryptContainer}>
-                    <Image style={styles.encryptImg} />
+                    <Image resizeMode="cover" style={styles.encryptImg} source={require('../../img/Public/icon_bank_encryption_green.png')} />
                     <Text style={styles.encryptTitle}>银行级数据加密保护</Text>
                 </View>
             </ScrollView>
@@ -111,13 +111,14 @@ const styles = StyleSheet.create({
         marginRight: 15,
     },
     encryptImg: {
-        width: 20,
-        height: 20,
-        backgroundColor: 'red',
+        width: 13, 
+        height: 16,
+        // backgroundColor: 'red',
         marginRight: 10
     },
     encryptTitle: {
         fontSize: 12,
+        fontWeight: '700',
         color: '#56bc58',
     }
 })

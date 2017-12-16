@@ -20,15 +20,15 @@ class CompletedOperator extends PureComponent {
     render() {
         return (
             <ScrollView  style={styles.container}>
-                <View style={styles.tipContainer}>
-                    <Image style={styles.completedImg} />
+                <View style={styles.tipContainer}>  
+                    <Image resizeMode="cover" style={styles.completedImg} source={require('../../img/Auth/icon_operator_completed.png')} />
                     <Text style={styles.completedTip}>恭喜您，运营商已完成认证</Text>
                 </View>
                 <TouchableOpacity style={styles.authenticationBtn} >
                     <Text style={styles.authenticationTitle}>已认证</Text>
                 </TouchableOpacity>
                 <View style={styles.encryptContainer}>
-                    <Image style={styles.encryptImg} />
+                    <Image resizeMode="cover" style={styles.encryptImg} source={require('../../img/Public/icon_bank_encryption_green.png')} />
                     <Text style={styles.encryptTitle}>银行级数据加密保护</Text>
                 </View>
             </ScrollView>
@@ -47,9 +47,8 @@ const styles = StyleSheet.create({
         marginTop: 80
     },
     completedImg: {
-        width: 120,
-        height: 100,
-        backgroundColor: 'red'
+        width: 150,
+        height: 128,
     },
     completedTip: {
         fontSize: 20,
@@ -81,13 +80,13 @@ const styles = StyleSheet.create({
         marginRight: 15,
     },
     encryptImg: {
-        width: 20,
-        height: 20,
-        backgroundColor: 'red',
+        width: 13, 
+        height: 16,
         marginRight: 10
     },
     encryptTitle: {
         fontSize: 12,
+        fontWeight: '700',
         color: '#56bc58',
     }
 })

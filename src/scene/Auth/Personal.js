@@ -112,7 +112,7 @@ class Personal extends PureComponent {
                         {/* <Heading1 style={[styles.rightPosition, styles.heading]}>事XX名</Heading1> */}
                         <TextInput
                             style={{height: 40, borderWidth: 0, paddingRight: 15, paddingLeft: 15}}
-                            placeholder="请填写真是姓名，保存后无法修改"
+                            placeholder="请填写真实姓名，保存后无法修改"
                         />
                     </View>
                     <Separator />
@@ -159,8 +159,8 @@ class Personal extends PureComponent {
                     {/* <Separator /> */}
                 </View>
                 <Separator />
-                <View style={styles.bottomContainer}>
-                    <Image style={styles.encryptImg} />
+                <View style={styles.bottomContainer}>   
+                    <Image resizeMode="cover" style={styles.encryptImg} source={require('../../img/Public/icon_bank_encryption_orange.png')}/>
                     <Paragraph style={styles.encryptTitle}>银行级数据加密保护</Paragraph>
                 </View>
             </ScrollView>
@@ -237,12 +237,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     encryptImg: {
-        width: 20,
+        width: 15,
         height: 20,
-        backgroundColor: 'red'
+        // backgroundColor: 'red'
     },
     encryptTitle:{
         marginLeft: 5,
+        fontSize: 14,
+        fontWeight: '700',
         color:'#a1a0a0'
     }
 })

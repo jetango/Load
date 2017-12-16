@@ -112,7 +112,7 @@ class Contact extends PureComponent {
                     <Separator />
                 </TouchableOpacity>
                 <View style={styles.bottomContainer}>
-                    <Image style={styles.encryptImg} />
+                    <Image resizeMode="cover" style={styles.encryptImg} source={require('../../img/Public/icon_bank_encryption_orange.png')} />
                     <Paragraph style={styles.encryptTitle}>银行级数据加密保护</Paragraph>
                 </View>
             </ScrollView>
@@ -194,12 +194,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     encryptImg: {
-        width: 20,
+        width: 15,
         height: 20,
-        backgroundColor: 'red'
+        // backgroundColor: 'red'
     },
     encryptTitle:{
         marginLeft: 5,
+        fontSize: 14,
+        fontWeight: '700',
         color:'#a1a0a0'
     }
 })

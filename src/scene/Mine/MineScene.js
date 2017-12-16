@@ -8,42 +8,47 @@ var ScreenHeight = Dimensions.get('window').height;
 
 var configs = [{
     id: '1',
-    logoImg: '',
+    logoImg: require('../../img/Mine/icon_mine_loanRecord.png'), 
     title: '借款记录',
     content: '',
     jumpLink: 'LoanList'
 }, {
     id: '2',
-    logoImg: '',
+    logoImg: require('../../img/Mine/icon_mine_discount.png'),
     title: '我的优惠券',
     content: '',
     jumpLink: 'SettingTradePwd'
 }, {
     id: '3',
-    logoImg: '',
+    logoImg: require('../../img/Mine/icon_mine_help.png'),  
     title: '帮助中心',
     content: '',
     jumpLink: 'MessageCenter'
 }, {
     id: '4',
-    logoImg: '',
+    logoImg: require('../../img/Mine/icon_mine_completeInfo.png'),    
     title: '完善资料',
     content: '',
     // jumpLink: 'PhoneInputLogin-1'
     jumpLink: 'Center'
 }, {
     id: '5',
-    logoImg: '',
+    logoImg: require('../../img/Mine/icon_mine_bank.png'),    
     title: '我的银行卡',
     content: '',
     jumpLink: 'BindBankCard'
 }, {
     id: '6',
-    logoImg: '',
+    logoImg: require('../../img/Mine/icon_mine_invitationCode.png'),
     title: '我的邀请码',
     content: 'Adg23sssfsd',
     jumpLink: 'PhoneInputLogin-2'
 }];
+
+const imagesInfo = {
+    setting: require('../../img/Mine/icon_mine_setting.png'),
+    question: require('../../img/Mine/icon_mine_question.png'), 
+};
 
 class MineScene extends PureComponent {
     // 导航栏设置
@@ -59,7 +64,7 @@ class MineScene extends PureComponent {
                         <Image style={styles.emptyImg} />
                         <Text style={styles.accountPhone}>152****9457</Text>
                         <TouchableOpacity style={styles.settingBtn}>
-                            <Image style={styles.settingImg} />
+                            <Image style={styles.settingImg} source={imagesInfo.setting}  />
                         </TouchableOpacity>
                     </View>
                     <View style={styles.moneyContainer}>
@@ -67,7 +72,7 @@ class MineScene extends PureComponent {
                         <View style={styles.numContainer}>
                             <Text style={styles.loanNumTitle}>1500</Text>
                             <TouchableOpacity style={styles.questionBtn}>
-                                <Image style={styles.questionImg} />
+                                <Image resizeMode="center" style={styles.questionImg} source={imagesInfo.question} />
                             </TouchableOpacity>
                         </View>
                         <Text style={styles.amountTitle}>剩余可借：1500元</Text>
@@ -126,7 +131,6 @@ const styles = StyleSheet.create({
         fontWeight: '500'
     },
     settingImg: {
-        backgroundColor: 'red',
         width: 30,
         height: 30
     },
@@ -155,9 +159,9 @@ const styles = StyleSheet.create({
         fontWeight: '600'
     },
     questionImg: {
-        width: 15,
-        height: 15,
-        backgroundColor: 'red'
+        width: 30,
+        height: 30,
+        // backgroundColor: 'red'
     },
     bottomContainer: {
         marginTop: -60,

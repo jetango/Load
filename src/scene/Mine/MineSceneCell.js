@@ -15,7 +15,7 @@ class MineSceneCell extends PureComponent {
         return (
             <TouchableOpacity style={styles.container} onPress={this._jump}>
                 <View style={styles.leftContainer}>
-                    <Image style={styles.leftImg} />
+                    <Image style={styles.leftImg} source={config.logoImg} resizeMode="center" />
                     <Text style={styles.leftTitle}>{config.title}</Text>
                 </View>
                 <View style={styles.rightContainer}>
@@ -48,9 +48,9 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     leftImg: {
-        backgroundColor: 'red',
-        width: 20,
-        height: 20,
+        // backgroundColor: 'red',
+        width: 30,
+        height: 30,
         marginRight: 8
     },
     leftTitle: {
