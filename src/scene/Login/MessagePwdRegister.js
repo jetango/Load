@@ -2,8 +2,12 @@
 import React, { PureComponent } from 'react'
 import { View, Text, Dimensions, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native'
 import { color, DetailCell, NavigationItem, SpacingView, Button, Separator } from '../../widget'
+import api from '../../networkapi'
 
 var {width, height, scale} = Dimensions.get('window');
+
+var timeCount = 60;
+var timer;
 
 class MessagePwdRegister extends PureComponent {
     // 导航栏设置
@@ -13,33 +17,74 @@ class MessagePwdRegister extends PureComponent {
     });
 
     state: {
-        isBtnEnabled: boolean
+        isSendMsgBtnEnabled: boolean,
+        isBtnEnabled: boolean,
+        phoneNum: String,
+        msgText: String,
+        selectedProtocol: boolean,
+        submitMsg: String,
+        submitPwd: String,
+        isRegisterBtnEnable: boolean
     }
 
     constructor(props: Object) {
         super(props);
         this.state = {
+            isSendMsgBtnEnabled: true,
             isBtnEnabled: false,
+            phoneNum: this.props.navigation.state.params.phoneNum,
+            msgText: '获取验证码',
+            selectedProtocol: true,
+            submitMsg: '',
+            submitPwd: '',
+            isRegisterBtnEnable: false
         };
+        // { (this: any).checkBtnDidClicked = this.checkBtnDidClicked.bind(this) }
+    }
+
+    componentWillUnmount() {
+        timeCount = 60;
+        clearInterval(timer);
+    }
+
+    async requestSendMsg() {
+        try {
+            let response = await fetch(api.sendMsg, {
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  mobile: this.state.phoneNum,
+                  s: '签名',
+                })})
+            let json = await response.json()
+            callback(json.data);
+
+        } catch (error) {
+            alert(error);
+        }
     }
 
     render() {
         return (
             <View style={styles.container}>
                 <Image resizeMode="cover" style={styles.logoImg} source={require('../../img/Login/icon_login_pwdLogo.png')} />
-                <Text style={styles.phoneNum}>18211110000</Text>
+                <Text style={styles.phoneNum}>{this.state.phoneNum}</Text>
                 <View style={[styles.messageNumContainer, styles.inputContainer]}>
                     <Image resizeMode="center" style={styles.phoneImg} source={require('../../img/Login/icon_login_checkmsg.png')} />
                     <TextInput
                         style={styles.phoneInput}
                         autoFocus={true}
                         maxLength={6}
+                        value={this.state.submitMsg}
                         placeholder="请输入验证码"
-                        onChangeText={(text) => {this.numChange(text, this)}}/>
+                        onChangeText={(text) => {this.numMsgChange(text, this)}}/>
                     <TouchableOpacity
                         style={styles.messageNumBtn}
                         onPress={() => this.getMessageNum(this)}>
-                        <Text style={styles.messageNumTitle}>获取验证码</Text>
+                        <Text style={[styles.messageNumTitle, this.state.isSendMsgBtnEnabled ? styles.messageTitleEnable : styles.messageTitleDisenable]}>{this.state.msgText}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={[styles.pwdContainer, styles.inputContainer]}>
@@ -47,9 +92,10 @@ class MessagePwdRegister extends PureComponent {
                     <TextInput
                         style={styles.phoneInput}
                         maxLength={16}
+                        value={this.state.submitPwd}
                         placeholder="请设置新的6-16位登录密码"
                         secureTextEntry={true}
-                        onChangeText={(text) => {this.numChange(text, this)}}/>
+                        onChangeText={(text) => {this.numPwdChange(text, this)}}/>
                 </View>
                 <View style={styles.invitationContainer}>
                     <TouchableOpacity
@@ -59,15 +105,15 @@ class MessagePwdRegister extends PureComponent {
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity
-                    style={styles.registerButton}
+                    style={[styles.registerButton, this.state.isRegisterBtnEnable ? styles.registerButtonEnable : styles.registerButtonDisenable]}
                     onPress={this.registerBtnDidClicked}>
                     <Text style={styles.registerButtonTitle}>注册</Text>
                 </TouchableOpacity>
                 <View style={styles.protocolContainer}>
                     <TouchableOpacity
                         style={styles.checkProtocoBtn}
-                        onPress={this.checkBtnDidClicked}>
-                        <Image resizeMode="center" style={styles.checkProtocoImg} source={require('../../img/Public/icon_check_unselected.png')} />
+                        onPress={() => this.checkBtnDidClicked(this)}>
+                        <Image resizeMode="center" style={styles.checkProtocoImg} source={this.state.selectedProtocol ? require('../../img/Public/icon_check_selected.png') : require('../../img/Public/icon_check_unselected.png')} />
                     </TouchableOpacity>
                     <Text style={styles.pureProtocol}>注册即同意</Text>
                     <TouchableOpacity
@@ -86,25 +132,66 @@ class MessagePwdRegister extends PureComponent {
     }
 
     // event
-    numChange(text, self) {
-        if (text.length > 0) {
-            // 一般情况下setState() 总是触发一次重绘，除非在 shouldComponentUpdate() 中实现了条件渲染逻辑
-            self.setState({isCloseHidden: false});
-            // self.state.isCloseHidden = false;
-        } else {
-            self.setState({isCloseHidden: true});
-        }
 
-        // 注册页面，设置的密码位数是6-16位
-        if (text.length >= 6) {
-            self.setState({isBtnEnabled: true});
+    numMsgChange(text, self) {
+        // TextInput 可以设置value=this.state.xxx，如果想要能正常输入数据，可以在方法onChangeText中设置this.setState({xxx: text})
+        self.setState({
+            submitMsg: text
+        });
+        self.changeRegisterBtnStatus(self);
+    }
+
+    numPwdChange(text, self) {
+        self.setState({
+            submitPwd: text
+        });
+        self.changeRegisterBtnStatus(self);
+    }
+
+    changeRegisterBtnStatus(self) {
+        console.log('selectedProtocol = ' + this.state.selectedProtocol);
+        if (self.state.submitMsg.length == 6 && 
+            self.state.submitPwd.length >= 6 && 
+            self.state.selectedProtocol) {
+            self.setState({
+                isRegisterBtnEnable: true
+            });
         } else {
-            self.setState({isBtnEnabled: false});
+            self.setState({
+                isRegisterBtnEnable: false
+            });
         }
     }
 
     getMessageNum(self) {
         // 获取验证码
+        if (self.state.isSendMsgBtnEnabled) {
+            timer = setInterval(() => {
+                if (timeCount > 0) {
+                    timeCount--;
+                    self.setState({
+                        msgText: timeCount + 's'
+                    })
+                } else {
+                    timeCount = 60;
+                    self.setState({
+                        msgText: '发送验证码'
+                    })
+                    clearInterval(timer);
+                    self.setState({
+                        isSendMsgBtnEnabled: true
+                    })
+                }
+                
+            }, 1000);
+            self.setState({
+                isSendMsgBtnEnabled: false
+            })
+            // 发送验证码请求
+            // self.requestSendMsg(function() {
+            //     // 发送验证码请求结果处理
+            // })
+        }
     }
 
     registerBtnDidClicked() {
@@ -121,6 +208,13 @@ class MessagePwdRegister extends PureComponent {
         }
     }
 
+    checkBtnDidClicked(self) {
+        console.log('before selectedProtocol $$ ' + self.state.selectedProtocol);
+        
+        self.setState({selectedProtocol: !self.state.selectedProtocol});
+        self.changeRegisterBtnStatus(self);
+    }
+
     invitationBtnDidClicked(self) {
         // 邀请码
         console.log('invitationBtnDidClicked');
@@ -132,7 +226,6 @@ class MessagePwdRegister extends PureComponent {
 };
 
 const styles = StyleSheet.create({
-
     headerTitle: {
         color: 'white',
         fontSize: 16
@@ -188,9 +281,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     messageNumTitle: {
-        color: '#67adfe',
         fontSize: 16,
         fontWeight: '600'
+    },
+    messageTitleEnable: {
+        color: '#67adfe',
+    },
+    messageTitleDisenable: {
+        color: '#eeeeee',
     },
     //
     invitationContainer: {
@@ -215,6 +313,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    registerButtonEnable: {
+        backgroundColor: '#586dfd'
+    },
+    registerButtonDisenable: {
         backgroundColor: '#cccccc'
     },
     registerButtonTitle: {
