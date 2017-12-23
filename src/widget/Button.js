@@ -1,6 +1,6 @@
 import React, { PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 
 class Button extends PureComponent {
     static propTypes = {
@@ -9,7 +9,8 @@ class Button extends PureComponent {
         style: Text.propTypes.style,
         containerStyle: View.propTypes.style,
         title: PropTypes.string,
-        activeOpacity: PropTypes.number
+        activeOpacity: PropTypes.number,
+        icon: PropTypes.number
     }
 
     static defaultProps = {
@@ -19,7 +20,7 @@ class Button extends PureComponent {
     }
 
     render() {
-        let { onPress, disabled, style, containerStyle, title, activeOpacity } = this.props
+        let { onPress, disabled, style, containerStyle, title, activeOpacity, icon } = this.props
         return (
             <TouchableOpacity
                 style={[styles.container, containerStyle]}
@@ -27,6 +28,9 @@ class Button extends PureComponent {
                 disabled={disabled}
                 activeOpacity={activeOpacity}
             >
+                {
+                    icon ? (<Image resizeMode="contain" style={{width: 15, marginRight: 5}} source={icon}/>) : null
+                }
                 <Text style={style}>
                     {title}
                 </Text>
@@ -39,6 +43,7 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
         alignItems: 'center',
+        flexDirection: 'row'
     },
 });
 

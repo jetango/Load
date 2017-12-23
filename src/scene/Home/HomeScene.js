@@ -26,10 +26,20 @@ class MineScene extends PureComponent {
             days: '14'
         }
         { (this: any).immediatelyApply = this.immediatelyApply.bind(this) }
+        { (this: any).remindMe = this.remindMe.bind(this) }
+        { (this: any).fetchEdu = this.fetchEdu.bind(this) }
     }
 
     componentDidMount() {
 
+    }
+
+    remindMe() {
+        console.log('immediatelyApply')
+    }
+
+    fetchEdu() {
+        console.log('fetchEdu')
     }
 
     async immediatelyApply() {
@@ -71,7 +81,7 @@ class MineScene extends PureComponent {
             days: value
         })
     }
-    
+
     render() {
         return (
             <View style={{ flex: 1, backgroundColor: color.background }}>
@@ -150,9 +160,12 @@ class MineScene extends PureComponent {
                     </View>
                     <View style={{display: 'none'}}>
                         <View style={[styles.justifyContent, styles.evaluateTitle]}><Heading1 style={{fontSize: 18}}>经我们仔细评估您的信用额度为：</Heading1></View>
-                        <View style={[styles.justifyContent, styles.evaluatePrice]}>
-                            <Text style={styles.evaluateValue}>1500</Text>
-                            <Text>元</Text>
+                        <View style={[styles.justifyContent, {position: 'relative'}]}>
+                            <Image style={{height: 150}} resizeMode="contain" source={require('../../img/Home/icon_edu.png')}/>
+                            <View style={[styles.evaluatePrice, styles.justifyContent, {position: 'absolute', top: '50%', marginTop: -50}]}>
+                                <Text style={styles.evaluateValue}>1500</Text>
+                                <Text>元</Text>
+                            </View>
                         </View>
                         <View style={[styles.justifyContent, styles.evaluateTitle]}>
                             <Heading1>离借款只差一步啦！</Heading1>
@@ -161,16 +174,43 @@ class MineScene extends PureComponent {
                     </View>
                     <View style={{display: 'none'}}>
                         <View style={[styles.justifyContent, styles.evaluateTitle]}><Heading1 style={{fontSize: 18}}>额度评估中...</Heading1></View>
-                        <View style={[styles.justifyContent, styles.evaluateLoading]}>
-                            <Text>雷达图片</Text>
-                            <Image />
+                        <View style={[styles.justifyContent, styles.evaluateLoading, {height: 200}]}>
+                            <Image style={{height: 150}} resizeMode="contain" source={require('../../img/Home/icon_leida.png')}/>
                         </View>
                         <View style={[styles.justifyContent, styles.evaluateTitle]}>
                             <Heading1>离借款只差一步啦！</Heading1>
                             <Heading1 onPress={this._bindBankCard.bind(this)} style={{color: color.theme}}>绑定收款银行卡&gt;&gt;</Heading1>
                         </View>
                     </View>
-                    <View style={styles.processContainer}>
+                    <View style={{display: 'none'}}>
+                        <View style={[styles.justifyContent, styles.evaluateTitle]}><Heading1 style={{fontSize: 18}}>距离下次申请时间还剩:(天)</Heading1></View>
+                        <View style={[styles.justifyContent, styles.evaluateLoading, {position: 'relative', marginBottom: 30}]}>
+                            <Image style={{height: 150}} resizeMode="contain" source={require('../../img/Home/icon_remain_day.png')}/>
+                            <Text style={[styles.evaluateValue, {position: 'absolute', top: '50%', marginTop: -20, color: '#4f68ff'}]}>18</Text>
+                        </View>
+                        <View style={styles.buttonBox}>
+                            <Button title="提醒我"
+                                containerStyle={styles.containerStyle}
+                                style={styles.style}
+                                onPress={this.remindMe}
+                                icon={require('../../img/Home/icon_deal_anytime_refund.png')}
+                            >
+                            </Button>
+                        </View>
+                    </View>
+                    <View>
+                        <View style={[styles.justifyContent, styles.evaluateTitle]}><Heading1 style={{fontSize: 18}}>请点击按钮获取您的借款额度</Heading1></View>
+                        <View style={[styles.justifyContent, styles.evaluateLoading, {position: 'relative', marginBottom: 30}]}>
+                            <TouchableOpacity onPress={this.fetchEdu}>
+                                <Image
+                                    style={{height: 150}}
+                                    resizeMode="contain"
+                                    source={require('../../img/Home/icon_fetch_edu.png')}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={[styles.processContainer, {display: 'none'}]}>
                         <View style={styles.imageContainer}>
                             <Image style={[styles.circleImg, styles.topPosition]} resizeMode="center" source={require('../../img/Loan/icon_audit_snow.png')} />
                             <Image style={styles.verticalImg} resizeMode="center" source={require('../../img/Loan/icon_audit_dashed.png')} />
@@ -212,7 +252,7 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     evaluateValue: {
-        fontSize: 50
+        fontSize: 30
     },
     avatar: {
         width: 50,
@@ -281,7 +321,7 @@ const styles = StyleSheet.create({
     },
     evaluatePrice: {
         paddingTop: 30,
-        paddingBottom: 80
+        paddingBottom: 30
     },
     //
     processContainer: {
