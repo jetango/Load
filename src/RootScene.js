@@ -11,6 +11,7 @@ import MineScene from './scene/Mine/MineScene'
 import ConfirmLoanScene from './scene/ConfirmLoan/ConfirmLoanScene'
 import PhoneInputLogin from './scene/Login/PhoneInputLogin'
 import PasswordLogin from './scene/Login/PasswordLogin'
+import MessageLogin from './scene/Login/MessageLogin'
 import MessagePwdRegister from './scene/Login/MessagePwdRegister'
 import MessageCenter from './scene/Message/MessageCenter'
 import LoanList from './scene/Loan/LoanList'
@@ -169,6 +170,7 @@ const Navigator = StackNavigator(
         ConfirmLoanScene: { screen: ConfirmLoanScene},
         PhoneInputLogin: {screen: PhoneInputLogin},
         PasswordLogin: {screen: PasswordLogin},
+        MessageLogin: {screen: MessageLogin},
         MessagePwdRegister: {screen: MessagePwdRegister},
         MessageCenter: {screen: MessageCenter},
         LoanList: {screen: LoanList},

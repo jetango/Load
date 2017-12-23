@@ -130,11 +130,12 @@ class PhoneInputLogin extends PureComponent {
             // 请求API，获取数据，判断是否已经注册过，注册就跳转到登陆，否则注册页面
 
             // let test = Math.round(Math.random() * 10) % 2
-            // if (test == 0) {
-            //     this.props.navigation.navigate('PasswordLogin', {phoneNum: this.state.phoneNum})
-            // } else {
+            if (test == 0) {
+                // PasswordLogin
+                this.props.navigation.navigate('PasswordLogin', {phoneNum: this.state.phoneNum})
+            } else {
                 this.props.navigation.navigate('MessagePwdRegister', {phoneNum: this.state.phoneNum})
-            // }
+            }
 
             // if (this.props.navigation.state.params.jumpStyle == "1") { // 登录
             //     this.props.navigation.navigate('PasswordLogin');

@@ -5,33 +5,49 @@ import { color, DetailCell, NavigationItem, SpacingView, Button, Separator } fro
 import { NavigationActions } from 'react-navigation'
 import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet'
 
+
 const STORAGE_USER = '@AsyncStorage:user_info'
 const CANCEL_INDEX = 0
 const DESTRUCTIVE_INDEX = 2
 
 var {width, height, scale} = Dimensions.get('window');
 
-class PasswordLogin extends PureComponent {
+var timeCount = 60;
+var timer;
+
+class MessageLogin extends PureComponent {
     // 导航栏设置
     static navigationOptions = ({ navigation }) => ({
         headerStyle: { backgroundColor: color.theme},
-        title: "密码登录",
+        title: "短信登录",
     });
 
     state: {
-        isBtnEnabled: boolean,
-        phoneNum: String
+        isSendMsgBtnEnabled: boolean,
+        isLoginBtnEnable: boolean,
+        phoneNum: String,
+        msgText: String,
+        submitMsg: String,
     }
 
     constructor(props: Object) {
         super(props);
         this.state = {
-            isBtnEnabled: false,
+            isSendMsgBtnEnabled: true,
+            isLoginBtnEnable: false,
             phoneNum: this.props.navigation.state.params.phoneNum,
+            msgText: '获取验证码',
+            submitMsg: '',
         };
-        { (this: any).nextBtnDidClicked = this.nextBtnDidClicked.bind(this) } 
+        { (this: any).nextBtnDidClicked = this.nextBtnDidClicked.bind(this) }
+        { (this: any).moreBtnDidClicked = this.moreBtnDidClicked.bind(this) }
+        this.handlePress = this.handlePress.bind(this)
         { (this: any).messageLoginBtnDidClicked = this.messageLoginBtnDidClicked.bind(this) }
-        { (this: any).handlePress = this.handlePress.bind(this) }
+    }
+
+    componentWillUnmount() {
+        timeCount = 60;
+        clearInterval(timer);
     }
 
     render() {
@@ -39,25 +55,30 @@ class PasswordLogin extends PureComponent {
             <View style={styles.container}>
                 <Image resizeMode="cover" style={styles.logoImg} source={require('../../img/Login/icon_login_pwdLogo.png')} />
                 <Text style={styles.phoneNum}>{this.state.phoneNum}</Text>
-                <View style={styles.pwdInputContainer}>
-                    <Image resizeMode="center" style={styles.phoneImg} source={require('../../img/Login/icon_login_lock.png')}/>
+                <View style={[styles.messageNumContainer, styles.inputContainer]}>
+                    <Image resizeMode="center" style={styles.phoneImg} source={require('../../img/Login/icon_login_checkmsg.png')} />
                     <TextInput
                         style={styles.phoneInput}
                         autoFocus={true}
-                        maxLength={16}
-                        placeholder="请输入登录密码"
-                        secureTextEntry={true}
-                        onChangeText={(text) => {this.phoneNumChange(text, this)}}/>
+                        maxLength={6}
+                        value={this.state.submitMsg}
+                        placeholder="请输入验证码"
+                        onChangeText={(text) => {this.numMsgChange(text, this)}}/>
+                    <TouchableOpacity
+                        style={styles.messageNumBtn}
+                        onPress={() => this.getMessageNum(this)}>
+                        <Text style={[styles.messageNumTitle, this.state.isSendMsgBtnEnabled ? styles.messageTitleEnable : styles.messageTitleDisenable]}>{this.state.msgText}</Text>
+                    </TouchableOpacity>
                 </View>
                 <TouchableOpacity
-                    style={[styles.nextButton, this.state.isBtnEnabled ? styles.nextBtnEnable : styles.nextBtnDisenable]}
+                    style={[styles.nextButton, this.state.isLoginBtnEnable ? styles.nextBtnEnable : styles.nextBtnDisenable]}
                     onPress={this.nextBtnDidClicked}>
                     <Text style={styles.nextButtonTitle}>登录</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.messageButton}
                     onPress={this.messageLoginBtnDidClicked}>
-                    <Text style={styles.messageButtonTitle}>使用短信验证码登录</Text>
+                    <Text style={styles.messageButtonTitle}>使用密码登录</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.moreButton}
@@ -118,9 +139,51 @@ class PasswordLogin extends PureComponent {
         }
     }
 
-    messageLoginBtnDidClicked() { 
-        // 跳转短信验证码登录
-        this.props.navigation.navigate('MessageLogin', {phoneNum: this.state.phoneNum});
+    getMessageNum(self) {
+        // 获取验证码
+        if (self.state.isSendMsgBtnEnabled) {
+            timer = setInterval(() => {
+                if (timeCount > 0) {
+                    timeCount--;
+                    self.setState({
+                        msgText: timeCount + 's'
+                    })
+                } else {
+                    timeCount = 60;
+                    self.setState({
+                        msgText: '发送验证码'
+                    })
+                    clearInterval(timer);
+                    self.setState({
+                        isSendMsgBtnEnabled: true
+                    })
+                }
+                
+            }, 1000);
+            self.setState({
+                isSendMsgBtnEnabled: false
+            })
+            // 发送验证码请求
+            // self.requestSendMsg(function() {
+            //     // 发送验证码请求结果处理
+            // })
+        }
+    }
+
+    numMsgChange(text, self) {
+        // TextInput 可以设置value=this.state.xxx，如果想要能正常输入数据，可以在方法onChangeText中设置this.setState({xxx: text})
+        self.setState({submitMsg: text});
+        if (text.length == 6) {
+            self.setState({isLoginBtnEnable: true});
+        } else {
+            self.setState({isLoginBtnEnable: false});
+        }
+    }
+
+    messageLoginBtnDidClicked() {
+        // 跳转密码登录
+        console.log('self.props = ' + this.props);
+        this.props.navigation.navigate('PasswordLogin', {phoneNum: this.state.phoneNum});
     }
 
     moreBtnDidClicked() {
@@ -164,7 +227,26 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     //
-    pwdInputContainer: {
+    logoImg: {
+        width: 100,
+        height: 112,
+        marginTop: 40,
+    },
+    phoneInput: {
+        fontSize: 16,
+        flex: 1
+    },
+    //
+    phoneImg: {
+        width: 20,
+        height: 30,
+        marginLeft: 15, 
+        marginRight: 15
+    },
+    messageNumContainer: {
+        marginTop: 30,
+    },
+    inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         borderWidth: 1.0 / scale,
@@ -172,22 +254,32 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         height: 40,
         width: 300,
-        marginTop: 30,
-    },
-    logoImg: {
-        width: 100,
-        height: 112,
-        marginTop: 40,
-    },
-    phoneImg: {
-        width: 20,
-        height: 40,
-        marginLeft: 15,
-        marginRight: 15
     },
     phoneInput: {
         fontSize: 16,
         flex: 1
+    },
+    pwdContainer: {
+        marginTop: 15
+    },
+    messageNumBtn: {
+        borderLeftColor: '#e2e2e2',
+        borderLeftWidth: 0.5,
+        width: 100,
+        height: 26,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    messageNumTitle: {
+        fontSize: 16,
+        fontWeight: '600'
+    },
+    messageTitleEnable: {
+        color: '#67adfe',
+    },
+    messageTitleDisenable: {
+        color: '#eeeeee',
     },
     //
     nextButton: {
@@ -231,4 +323,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default PasswordLogin;
+export default MessageLogin;

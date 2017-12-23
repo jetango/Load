@@ -148,10 +148,19 @@ class MessagePwdRegister extends PureComponent {
         self.changeRegisterBtnStatus(self);
     }
 
+    checkBtnDidClicked(self) {
+        console.log('before selectedProtocol $$ ' + self.state.selectedProtocol);
+        // react native setState之后的state值不能立即使用，setState之后，需要走完RN生命周期，也就是走到render时，state的值才会变成setState的值。
+        // 要立即使用state的值，需要直接更改，也即this.state.something = 'now';
+        self.state.selectedProtocol = !self.state.selectedProtocol;
+        // self.setState({selectedProtocol: self.state.selectedProtocol});
+        self.changeRegisterBtnStatus(self);
+    }
+
     changeRegisterBtnStatus(self) {
         console.log('selectedProtocol = ' + this.state.selectedProtocol);
-        if (self.state.submitMsg.length == 6 && 
-            self.state.submitPwd.length >= 6 && 
+        if (self.state.submitMsg.length >= 5 && 
+            self.state.submitPwd.length >= 5 && 
             self.state.selectedProtocol) {
             self.setState({
                 isRegisterBtnEnable: true
@@ -206,13 +215,6 @@ class MessagePwdRegister extends PureComponent {
                 })
             )
         }
-    }
-
-    checkBtnDidClicked(self) {
-        console.log('before selectedProtocol $$ ' + self.state.selectedProtocol);
-        
-        self.setState({selectedProtocol: !self.state.selectedProtocol});
-        self.changeRegisterBtnStatus(self);
     }
 
     invitationBtnDidClicked(self) {
