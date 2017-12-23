@@ -46,7 +46,7 @@ class MineScene extends PureComponent {
         // this.props.navigation.navigate('ConfirmLoanScene', { info: info })
         let userInfo = await this._getUserInfo()
         let {price, days} = this.state
-        if (userInfo) {
+        if (!userInfo) {
             this.props.navigation.navigate('ConfirmLoanScene', {
                 title: '借款', price, days,
                 onGoBack: () => {
@@ -105,7 +105,7 @@ class MineScene extends PureComponent {
                         </View>
                         <Separator />
                     </View>
-                    <View style={{display: 'none'}}>
+                    <View>
                     {/* <View> */}
                         <View style={styles.infoContent}>
                             <View style={styles.infoLimit}>
@@ -198,7 +198,7 @@ class MineScene extends PureComponent {
                             </Button>
                         </View>
                     </View>
-                    <View>
+                    <View style={{display: 'none'}}>
                         <View style={[styles.justifyContent, styles.evaluateTitle]}><Heading1 style={{fontSize: 18}}>请点击按钮获取您的借款额度</Heading1></View>
                         <View style={[styles.justifyContent, styles.evaluateLoading, {position: 'relative', marginBottom: 30}]}>
                             <TouchableOpacity onPress={this.fetchEdu}>

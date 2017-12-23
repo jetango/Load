@@ -39,7 +39,8 @@ class MessagePwdRegister extends PureComponent {
             submitPwd: '',
             isRegisterBtnEnable: false
         };
-        // { (this: any).checkBtnDidClicked = this.checkBtnDidClicked.bind(this) }
+        { (this: any).checkBtnDidClicked = this.checkBtnDidClicked.bind(this) }
+        { (this: any).registerBtnDidClicked = this.registerBtnDidClicked.bind(this) }
     }
 
     componentWillUnmount() {
@@ -159,8 +160,8 @@ class MessagePwdRegister extends PureComponent {
 
     changeRegisterBtnStatus(self) {
         console.log('selectedProtocol = ' + this.state.selectedProtocol);
-        if (self.state.submitMsg.length >= 5 && 
-            self.state.submitPwd.length >= 5 && 
+        if (self.state.submitMsg.length >= 5 &&
+            self.state.submitPwd.length >= 5 &&
             self.state.selectedProtocol) {
             self.setState({
                 isRegisterBtnEnable: true
@@ -191,7 +192,7 @@ class MessagePwdRegister extends PureComponent {
                         isSendMsgBtnEnabled: true
                     })
                 }
-                
+
             }, 1000);
             self.setState({
                 isSendMsgBtnEnabled: false
@@ -251,7 +252,7 @@ const styles = StyleSheet.create({
     phoneImg: {
         width: 20,
         height: 30,
-        marginLeft: 15, 
+        marginLeft: 15,
         marginRight: 15
     },
     messageNumContainer: {

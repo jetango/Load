@@ -85,7 +85,7 @@ class MessageLogin extends PureComponent {
                     onPress={this.moreBtnDidClicked}>
                     <Text style={styles.moreButtonTitle}>更多</Text>
                 </TouchableOpacity>
-                <ActionSheet 
+                <ActionSheet
                     ref={o => this.ActionSheet = o}
                     cancelButtonIndex={CANCEL_INDEX}
                     onPress={this.handlePress}
@@ -158,7 +158,7 @@ class MessageLogin extends PureComponent {
                         isSendMsgBtnEnabled: true
                     })
                 }
-                
+
             }, 1000);
             self.setState({
                 isSendMsgBtnEnabled: false
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     phoneImg: {
         width: 20,
         height: 30,
-        marginLeft: 15, 
+        marginLeft: 15,
         marginRight: 15
     },
     messageNumContainer: {

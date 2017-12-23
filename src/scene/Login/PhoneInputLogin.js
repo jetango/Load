@@ -55,11 +55,11 @@ class PhoneInputLogin extends PureComponent {
     }
 
     isPhoneFormat(phone) {
-        if(phone.length == 11 && /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(14[0-9]{1})|)+\d{8})$/.test(phone) ) {  
-            return true;  
-        } else{  
-            return false;  
-        }  
+        if(phone.length == 11 && /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(14[0-9]{1})|)+\d{8})$/.test(phone) ) {
+            return true;
+        } else{
+            return false;
+        }
     }
 
     render() {
@@ -117,7 +117,7 @@ class PhoneInputLogin extends PureComponent {
                 return;
             }
             //  API 请求，等待接口调试
-        
+
             // this.requestCheckReg(function(respData) {
             //     var isReg = true;
             //     if (isReg == 0) {
@@ -129,7 +129,7 @@ class PhoneInputLogin extends PureComponent {
             // 进入下一个页面 TO_DO
             // 请求API，获取数据，判断是否已经注册过，注册就跳转到登陆，否则注册页面
 
-            // let test = Math.round(Math.random() * 10) % 2
+            let test = Math.round(Math.random() * 10) % 2
             if (test == 0) {
                 // PasswordLogin
                 this.props.navigation.navigate('PasswordLogin', {phoneNum: this.state.phoneNum})

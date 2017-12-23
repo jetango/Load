@@ -29,7 +29,7 @@ class PasswordLogin extends PureComponent {
             isBtnEnabled: false,
             phoneNum: this.props.navigation.state.params.phoneNum,
         };
-        { (this: any).nextBtnDidClicked = this.nextBtnDidClicked.bind(this) } 
+        { (this: any).nextBtnDidClicked = this.nextBtnDidClicked.bind(this) }
         { (this: any).messageLoginBtnDidClicked = this.messageLoginBtnDidClicked.bind(this) }
         { (this: any).handlePress = this.handlePress.bind(this) }
     }
@@ -64,7 +64,7 @@ class PasswordLogin extends PureComponent {
                     onPress={this.moreBtnDidClicked}>
                     <Text style={styles.moreButtonTitle}>更多</Text>
                 </TouchableOpacity>
-                <ActionSheet 
+                <ActionSheet
                     ref={o => this.ActionSheet = o}
                     cancelButtonIndex={CANCEL_INDEX}
                     onPress={this.handlePress}
@@ -118,7 +118,7 @@ class PasswordLogin extends PureComponent {
         }
     }
 
-    messageLoginBtnDidClicked() { 
+    messageLoginBtnDidClicked() {
         // 跳转短信验证码登录
         this.props.navigation.navigate('MessageLogin', {phoneNum: this.state.phoneNum});
     }
